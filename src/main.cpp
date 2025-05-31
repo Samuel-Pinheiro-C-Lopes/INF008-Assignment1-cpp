@@ -6,6 +6,7 @@
 #include"participant.h"
 #include"course_event.h"
 #include"student_participant.h"
+#include"professor_participant.h"
 
 int main (int argc, char* argv[]) {
     std::cout << "Hello World!" << std::endl;
