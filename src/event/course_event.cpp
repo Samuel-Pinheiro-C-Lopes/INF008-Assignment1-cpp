@@ -5,6 +5,7 @@
 #include"professor_participant.h"
 #include"subject.h"
 
+#include<memory>
 #include<iostream>
 
 /* Default id sequence */
@@ -21,7 +22,7 @@ void CourseEvent::printSelf() const {
     this->subject->printSelf();
 }
 
-CourseEvent::CourseEvent(std::string name, int vacancies, std::string date, ProfessorParticipant* professor, Subject* subject) : Event(nextId(), name, vacancies, date), professor(CourseEvent::validateProfessor(professor, subject) ? professor : nullptr ), subject(subject) {
+CourseEvent::CourseEvent(std::string name, int vacancies, std::string date, const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) : Event(nextId(), name, vacancies, date), professor(CourseEvent::validateProfessor(professor, subject) ? professor : nullptr ), subject(subject) {
     if (this->professor == nullptr) {
         std::cout << "The professor provided wasn't valid for the course event." << std::endl;
         professor->printSelf();
@@ -30,10 +31,10 @@ CourseEvent::CourseEvent(std::string name, int vacancies, std::string date, Prof
 
 /* Should only receive
  * StudentParticipants */
-bool CourseEvent::registerParticipant(StudentParticipant* participant) {
+bool CourseEvent::registerParticipant(const std::shared_ptr<StudentParticipant>& participant) {
     return Event::registerParticipant(participant);
 }
 
-bool CourseEvent::validateProfessor(ProfessorParticipant* professor, Subject* subject) {
+bool CourseEvent::validateProfessor(const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) {
     return professor->teaches(subject);
 }

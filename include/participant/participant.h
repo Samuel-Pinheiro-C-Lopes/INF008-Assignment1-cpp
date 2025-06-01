@@ -12,6 +12,7 @@ public:
     static bool validateCPF(std::string cpf, bool verbose);
     void printSelf() const override;
 protected:
+    Participant(int id) : Entity(id), cpf(cpfFromInput()) {};
     Participant(int id, std::string name, std::string cpf);
 private:
     /* constexpr says it's evaluated at compiler time, meaning computation
@@ -19,5 +20,6 @@ private:
     static constexpr int VERIFIER_START = 9;
     static constexpr int VERIFIER_MULTIPLIER = 2;
     static char calculateVerifierDigit(std::vector<char>::iterator rbegin, std::vector<char>::iterator rend);
+    std::string cpfFromInput();
 };
 #endif

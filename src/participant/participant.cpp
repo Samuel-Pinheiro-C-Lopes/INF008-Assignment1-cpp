@@ -15,6 +15,15 @@ void Participant::printSelf() const {
     std::cout << "CPF: " << cpf << "." << std::endl;
 }
 
+std::string Participant::cpfFromInput() {
+    std::string cpf;
+    std::cin >> cpf;
+    if (Participant::validateCPF(cpf, true))
+        return cpf;
+    std::cout << "CPF: " << cpf << " is not valid." << std::endl;
+    return "";
+}
+
 /* constexpr says it's evaluated at compiler time, meaning computation
  * can be handled by it - it's a good idiomatic practice, as it seems */
 // constexpr int Participant::VERIFIER_START = 9;
