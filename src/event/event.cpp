@@ -17,7 +17,7 @@ void Event<ParticipantType>::printSelf() const {
     Entity::printSelf();
     std::cout << "Vacancies: " << vacancies << "." << std::endl;
     std::cout << "Participants: " << std::endl;
-    for (const std::pair<int, std::shared_ptr<ParticipantType>>& pair : participants)
+    for (const std::pair<int, ParticipantType*> pair : participants)
         pair.second->printSelf();
 }
 
@@ -28,9 +28,9 @@ void Event<ParticipantType>::printSelf() const {
  * is available for new participants.
  * Returns if it was able to insert. */
 template<typename ParticipantType>
-bool Event<ParticipantType>::registerParticipant(std::shared_ptr<ParticipantType> participant) {
+bool Event<ParticipantType>::registerParticipant(ParticipantType* participant) {
     if (vacancies == 0) return false;
-    bool wasParticipantInserted = participants.insert({participant->getId(), participant}).second;
+    bool wasParticipantInserted = participants.insert(std::make_pair(participant->getId(), participant)).second;
     if (wasParticipantInserted) vacancies--;
     return wasParticipantInserted;
 }
