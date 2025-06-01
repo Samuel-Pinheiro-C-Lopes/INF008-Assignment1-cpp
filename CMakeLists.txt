@@ -11,4 +11,6 @@ target_include_directories(TRAB_1 PRIVATE
     ${PROJECT_SOURCE_DIR}/include/entity
     ${PROJECT_SOURCE_DIR}/include/event
     ${PROJECT_SOURCE_DIR}/include/participant
+    ${PROJECT_SOURCE_DIR}/include/subject
+    ${PROJECT_SOURCE_DIR}/include/university
 )
