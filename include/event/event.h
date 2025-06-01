@@ -5,7 +5,6 @@
 #include"participant.h"
 #include<unordered_map>
 #include<chrono>
-#include<memory>
 #include<type_traits>
 
 /* abstract event class */
@@ -31,13 +30,13 @@ private:
      * The keys are the ids, and the
      * Values the participants with
      * the id. */
-    std::unordered_map<int, std::shared_ptr<ParticipantType>> participants;
+    std::unordered_map<int, ParticipantType*> participants;
 public:
     /* Each type of event will perform
      * different ways of registration that
      * have behave in commom with a base one
      * implemented in event.cpp */
-    virtual bool registerParticipant(std::shared_ptr<ParticipantType> participant);
+    virtual bool registerParticipant(ParticipantType* participant);
     /* Overrides the print to show date
      * and participants. */
     void printSelf() const override;
