@@ -7,7 +7,9 @@ class Entity {
 private:
     const int id;
     const std::string name;
+    std::string nameFromInput();
 protected:
+    Entity(int id) : id(id), name(nameFromInput()) {};
     Entity(int id, std::string name) : id(id), name(name) {};
     ~Entity() {};
     /* Id sequence for concrete
