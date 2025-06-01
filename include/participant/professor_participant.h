@@ -5,18 +5,20 @@
 #include"subject.h"
 
 #include<unordered_map>
+#include<memory>
 
 class ProfessorParticipant : public Participant {
 public:
     void printSelf() const override;
-    bool teaches(Subject* subject) const;
-    bool addSubject(Subject* subject);
+    bool teaches(const std::shared_ptr<Subject>& subject) const;
+    bool addSubject(const std::shared_ptr<Subject>& subject);
 protected:
+    ProfessorParticipant(int id, const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects) : Participant(id), teachingSubjects(Subject::selectSubjectsFromInput("Select the subjects the professor teaches:", availableSubjects)) {};
     ProfessorParticipant(int id, std::string name, std::string cpf) : Participant(id, name, cpf) {};
 private:
-    std::unordered_map<int, Subject*> subjects;
     int nextId() override;
     static int currentId;
+    std::unordered_map<int, std::shared_ptr<Subject>> teachingSubjects;
 };
 
 #endif
