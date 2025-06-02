@@ -1,32 +1,21 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include"identificable.h"
+
 #include<string>
 
-class Entity {
+class Entity : public Identificable {
 private:
-    const int id;
     const std::string name;
     std::string nameFromInput();
 protected:
-    Entity(int id) : id(id), name(nameFromInput()) {};
-    Entity(int id, std::string name) : id(id), name(name) {};
+    Entity(int id) : Identificable(id), name(nameFromInput()) {};
+    Entity(int id, std::string name) : Identificable(id), name(name) {};
     ~Entity() {};
-    /* Id sequence for concrete
-     * implementations */
-    virtual int nextId() = 0;
 public:
-    /* A getter for the id can be handy
-     * once we use STL containers and
-     * need to find unique elements
-     * or assign a unique key */
-    int getId() const;
-    /* All entities shall implement
-     * an own way of printing itself -
-     * although I think most
-     * will use ascendant classes
-     * implementations of this */
-    virtual void printSelf() const;
+    /* Implements the print self for name */
+    void printSelf() const override;
 };
 
 #endif
