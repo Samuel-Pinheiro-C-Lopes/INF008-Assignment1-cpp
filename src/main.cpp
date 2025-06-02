@@ -8,6 +8,14 @@
 #include"student_participant.h"
 #include"professor_participant.h"
 #include"university.h"
+#include"registration.h"
+#include"in_person_event_registration.h"
+#include"online_event_registration.h"
+
+/* last ideas:
+ * Changes: Identificable -> Entity and the registrations in Event.h -> guestRegistrations
+ * Entity -> NamedEntity (those changes make the names more congruent)
+ * More explicit documentation for the registration approach...
 
 int main (int argc, char* argv[]) {
     std::cout << "Hello World!" << std::endl;
