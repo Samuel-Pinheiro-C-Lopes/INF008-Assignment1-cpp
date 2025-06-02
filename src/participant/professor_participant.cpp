@@ -15,7 +15,7 @@ int ProfessorParticipant::nextId() {
 
 void ProfessorParticipant::printSelf() const {
     Participant::printSelf();
-    std::cout << "Subjects: " << std::endl;
+    std::cout << "Currently teaching the following subjects: " << std::endl;
     for (const std::pair<int, std::shared_ptr<Subject>>& pair : this->teachingSubjects)
         pair.second->printSelf();
 }
