@@ -1,6 +1,7 @@
 #include"event.h"
 #include"entity.h"
 #include"participant.h"
+#include"registration.h"
 
 #include"student_participant.h"
 
@@ -18,7 +19,7 @@ void Event<ParticipantType>::printSelf() const {
     Entity::printSelf();
     std::cout << "Vacancies: " << vacancies << "." << std::endl;
     std::cout << "Participants: " << std::endl;
-    for (const std::pair<int, std::shared_ptr<ParticipantType>> pair : participants)
+    for (const std::pair<int, std::shared_ptr<Registration<ParticipantType>>> pair : registrations)
         pair.second->printSelf();
 }
 
@@ -28,6 +29,8 @@ void Event<ParticipantType>::printSelf() const {
  * try an insertion if the event
  * is available for new participants.
  * Returns if it was able to insert. */
+
+/*
 template<typename ParticipantType>
 bool Event<ParticipantType>::registerParticipant(const std::shared_ptr<ParticipantType>& participant) {
     if (vacancies == 0) return false;
@@ -35,11 +38,20 @@ bool Event<ParticipantType>::registerParticipant(const std::shared_ptr<Participa
     if (wasParticipantInserted) vacancies--;
     return wasParticipantInserted;
 }
+*/
 /* Note: unordered_map::insert([...])
  * returns a pair whose second value is
  * a boolean which value is true if it
  * did perform the insertion and false
  * otherwise */
+
+template<typename ParticipantType>
+bool Event<ParticipantType>::addRegistration(const std::shared_ptr<Registration<ParticipantType>>& registration) {
+    if (vacancies == 0) return false;
+    bool wasRegistrationInserted = registrations.insert(std::make_pair(registration->getId(), registration)).second;
+    if (wasRegistrationInserted) vacancies--;
+    return wasRegistrationInserted;
+}
 
 /* telling the compiler which types
  * will be used to avoid link errors */

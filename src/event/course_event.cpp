@@ -31,10 +31,11 @@ CourseEvent::CourseEvent(std::string name, int vacancies, std::string date, cons
 
 /* Should only receive
  * StudentParticipants */
+/*
 bool CourseEvent::registerParticipant(const std::shared_ptr<StudentParticipant>& participant) {
     return Event::registerParticipant(participant);
 }
-
+*/
 bool CourseEvent::validateProfessor(const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) {
     return professor->teaches(subject);
 }
