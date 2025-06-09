@@ -1,25 +1,22 @@
 #ifndef PARTICIPANT_H
 #define PARTICIPANT_H
 
-#include"entity.h"
+#include"named_entity.h"
+#include"prompt.h"
+#include"cpf.h"
 #include<string>
 #include<vector>
 
-class Participant : public Entity {
+class Participant : public NamedEntity {
 private:
-    const std::string cpf;
+    const CPF cpf;
 public:
     static bool validateCPF(std::string cpf, bool verbose);
     void printSelf() const override;
 protected:
-    Participant(int id) : Entity(id), cpf(cpfFromInput()) {};
-    Participant(int id, std::string name, std::string cpf);
+    Participant(int id) : NamedEntity(id), cpf(Prompt::getTextFromInput("Enter the CPF:")) {};
+    Participant(int id, std::string name, std::string cpfString) : NamedEntity(id, name), cpf(cpfString) {};
 private:
-    /* constexpr says it's evaluated at compiler time, meaning computation
-     * can be handled by it - it's a good idiomatic practice, as it seems */
-    static constexpr int VERIFIER_START = 9;
-    static constexpr int VERIFIER_MULTIPLIER = 2;
-    static char calculateVerifierDigit(std::vector<char>::iterator rbegin, std::vector<char>::iterator rend);
-    std::string cpfFromInput();
+    // std::string cpfFromInput(); // using prompt helper class now, it's cleaner
 };
 #endif

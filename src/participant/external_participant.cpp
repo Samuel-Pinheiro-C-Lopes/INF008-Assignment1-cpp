@@ -12,6 +12,7 @@ int ExternalParticipant::nextId() {
 }
 
 void ExternalParticipant::printSelf() const {
+    std::cout << "External name: ";
     Participant::printSelf();
     std::cout << "Came from " << this->originUniversity << " university." << std::endl;
 }

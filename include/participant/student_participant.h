@@ -10,7 +10,8 @@
 class StudentParticipant : public Participant {
 public:
     StudentParticipant(const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects) : Participant(nextId()), learningSubjects(Prompt::forType<Subject>::getSelectablesFromInput("Select the subjects the student studies:", availableSubjects)) {};
-    StudentParticipant(std::string name, std::string cpf) : Participant(nextId(), name, cpf) {};
+
+    StudentParticipant(std::string name, std::string cpf, const std::unordered_map<int, std::shared_ptr<Subject>>& learningSubjects) : Participant(nextId(), name, cpf), learningSubjects(learningSubjects) {};
     void printSelf() const override;
     int nextId() override;
 private:

@@ -1,6 +1,7 @@
 #include"professor_participant.h"
 
 #include"subject.h"
+#include"prompt.h"
 
 #include<memory>
 #include<unordered_map>
@@ -14,6 +15,7 @@ int ProfessorParticipant::nextId() {
 }
 
 void ProfessorParticipant::printSelf() const {
+    std::cout << "Professor name: ";
     Participant::printSelf();
     std::cout << "Currently teaching the following subjects: " << std::endl;
     for (const std::pair<int, std::shared_ptr<Subject>>& pair : this->teachingSubjects)
