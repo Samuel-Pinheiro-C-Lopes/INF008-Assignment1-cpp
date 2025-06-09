@@ -1,6 +1,8 @@
 #include"online_event_registration.h"
 #include"registration.h"
 #include"student_participant.h"
+#include"professor_participant.h"
+#include"external_participant.h"
 
 #include<iostream>
 
@@ -18,5 +20,7 @@ void OnlineEventRegistration<ParticipantType>::printSelf() const {
     std::cout << "E-mail for contact: " << this->contactEmail << "." << std::endl;
 };
 
-template class Registration<Participant>;
-template class Registration<StudentParticipant>;
+template class OnlineEventRegistration<Participant>;
+template class OnlineEventRegistration<StudentParticipant>;
+template class OnlineEventRegistration<ProfessorParticipant>;
+template class OnlineEventRegistration<ExternalParticipant>;

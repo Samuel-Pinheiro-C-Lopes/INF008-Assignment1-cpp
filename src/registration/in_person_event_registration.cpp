@@ -1,6 +1,8 @@
 #include"in_person_event_registration.h"
 #include"registration.h"
 #include"student_participant.h"
+#include"professor_participant.h"
+#include"external_participant.h"
 
 #include<iostream>
 
@@ -19,5 +21,8 @@ void InPersonEventRegistration<ParticipantType>::printSelf() const {
     else std::cout << "[NO]" << std::endl;
 };
 
-template class Registration<Participant>;
-template class Registration<StudentParticipant>;
+template class InPersonEventRegistration<Participant>;
+template class InPersonEventRegistration<StudentParticipant>;
+template class InPersonEventRegistration<ProfessorParticipant>;
+template class InPersonEventRegistration<ExternalParticipant>;
+
