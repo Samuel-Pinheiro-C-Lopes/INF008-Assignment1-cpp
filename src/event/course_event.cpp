@@ -17,17 +17,21 @@ int CourseEvent::nextId() {
 void CourseEvent::printSelf() const {
     Event::printSelf();
     std::cout << "Professor: " << std::endl;
+    Prompt::printPartialSeparator();
     this->professor->printSelf();
-    std::cout << "Subject: " << std::endl;
+    Prompt::printPartialSeparator();
+    std::cout << "Course subject: " << std::endl;
     this->subject->printSelf();
 }
 
+/*
 CourseEvent::CourseEvent(std::string name, int vacancies, std::string date, const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) : Event(nextId(), name, vacancies, date), professor(CourseEvent::validateProfessor(professor, subject) ? professor : nullptr ), subject(subject) {
     if (this->professor == nullptr) {
         std::cout << "The professor provided wasn't valid for the course event." << std::endl;
         professor->printSelf();
     }
 };
+*/
 
 /* Should only receive
  * StudentParticipants */
@@ -36,6 +40,12 @@ bool CourseEvent::registerParticipant(const std::shared_ptr<StudentParticipant>&
     return Event::registerParticipant(participant);
 }
 */
-bool CourseEvent::validateProfessor(const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) {
-    return professor->teaches(subject);
+bool CourseEvent::validateProfessor(const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject, const bool verbose) {
+    bool valid = professor->teaches(subject);
+    if (!valid && verbose) {
+        std::cout << "The professor: " << std::endl;
+        professor->printSelf();
+        std::cout << "Isn't valid for this couse event since he/she doesn't teaches the subject." << std::endl;
+    }
+    return valid;
 }

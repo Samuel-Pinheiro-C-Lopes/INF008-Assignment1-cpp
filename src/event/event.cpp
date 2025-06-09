@@ -1,7 +1,9 @@
 #include"event.h"
-#include"entity.h"
+#include"event_base.h"
 #include"participant.h"
 #include"registration.h"
+#include"external_participant.h"
+#include"professor_participant.h"
 
 #include"student_participant.h"
 
@@ -14,13 +16,14 @@
  * and then proceeds to print the
  * available vacancies, date and
  * all the participants */
-template<typename ParticipantType>
-void Event<ParticipantType>::printSelf() const {
-    Entity::printSelf();
-    std::cout << "Vacancies: " << vacancies << "." << std::endl;
-    std::cout << "Participants: " << std::endl;
-    for (const std::pair<int, std::shared_ptr<Registration<ParticipantType>>> pair : registrations)
+template<typename AttendeeType>
+void Event<AttendeeType>::printSelf() const {
+    EventBase::printSelf();
+    std::cout << "Attendees: " << std::endl;
+    for (const std::pair<int, std::shared_ptr<Registration<AttendeeType>>> pair : guestsRegistrations) {
         pair.second->printSelf();
+        std::cout << std::endl;
+    }
 }
 
 /* Base registration behavior.
@@ -45,15 +48,14 @@ bool Event<ParticipantType>::registerParticipant(const std::shared_ptr<Participa
  * did perform the insertion and false
  * otherwise */
 
-template<typename ParticipantType>
-bool Event<ParticipantType>::addRegistration(const std::shared_ptr<Registration<ParticipantType>>& registration) {
-    if (vacancies == 0) return false;
-    bool wasRegistrationInserted = registrations.insert(std::make_pair(registration->getId(), registration)).second;
-    if (wasRegistrationInserted) vacancies--;
-    return wasRegistrationInserted;
+template<typename AttendeeType>
+bool Event<AttendeeType>::addAttendeeRegistration(const std::shared_ptr<Registration<AttendeeType>>& guestRegistration) {
+    return Event<AttendeeType>::addRegistrationTo<Registration<AttendeeType>>(this->guestsRegistrations, guestRegistration);
 }
 
 /* telling the compiler which types
  * will be used to avoid link errors */
 template class Event<Participant>;
 template class Event<StudentParticipant>;
+template class Event<ExternalParticipant>;
+template class Event<ProfessorParticipant>;
