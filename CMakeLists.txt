@@ -8,12 +8,14 @@ add_executable(TRAB_1 ${SOURCES})
 
 # Where to look for .h files
 target_include_directories(TRAB_1 PRIVATE
-    ${PROJECT_SOURCE_DIR}/include/identificable
-    ${PROJECT_SOURCE_DIR}/include/prompt
     ${PROJECT_SOURCE_DIR}/include/entity
+    ${PROJECT_SOURCE_DIR}/include/prompt
+    ${PROJECT_SOURCE_DIR}/include/named_entity
     ${PROJECT_SOURCE_DIR}/include/registration
     ${PROJECT_SOURCE_DIR}/include/event
     ${PROJECT_SOURCE_DIR}/include/participant
     ${PROJECT_SOURCE_DIR}/include/subject
     ${PROJECT_SOURCE_DIR}/include/university
+    ${PROJECT_SOURCE_DIR}/include/values
+    ${PROJECT_SOURCE_DIR}/include/data_gen
 )
