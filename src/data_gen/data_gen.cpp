@@ -31,8 +31,6 @@ void DataGen::generateDataFor(University& university) {
     }
     university.subjects = subjects;
 
-    std::cout << "T" << std::endl;
-
     // now the students
     std::unordered_map<int, std::shared_ptr<StudentParticipant>> students;
     std::shared_ptr<StudentParticipant> currStudent;
@@ -63,8 +61,6 @@ void DataGen::generateDataFor(University& university) {
 
     university.students = students;
 
-    std::cout << "T" << std::endl;
-
     // now the professors
     std::unordered_map<int, std::shared_ptr<ProfessorParticipant>> professors;
     std::shared_ptr<ProfessorParticipant> currProfessor;
@@ -91,8 +87,6 @@ void DataGen::generateDataFor(University& university) {
     professors.insert(std::make_pair(currProfessor->getId(), currProfessor));
 
     university.professors = professors;
-
-    std::cout << "T" << std::endl;
 
     // now the workshops
     std::unordered_map<int, std::shared_ptr<WorkshopEvent>> workshops;
@@ -138,8 +132,6 @@ void DataGen::generateDataFor(University& university) {
     professorsSubset.clear();
 
     university.workshops = workshops;
-
-    std::cout << "T" << std::endl;
 
     // now the lectures
     std::unordered_map<int, std::shared_ptr<LectureEvent>> lectures;
@@ -192,8 +184,6 @@ void DataGen::generateDataFor(University& university) {
 
     university.lectures = lectures;
 
-    std::cout << "T" << std::endl;
-
     // now the fairs
     std::unordered_map<int, std::shared_ptr<FairEvent>> fairs;
     std::shared_ptr<FairEvent> currFair;
@@ -223,8 +213,6 @@ void DataGen::generateDataFor(University& university) {
     fairs.insert(std::make_pair(currFair->getId(), currFair));
 
     university.fairs = fairs;
-
-    std::cout << "T" << std::endl;
 
     // now the courses
     std::unordered_map<int, std::shared_ptr<CourseEvent>> courses;
@@ -261,8 +249,6 @@ void DataGen::generateDataFor(University& university) {
     courses.insert(std::make_pair(currCourse->getId(), currCourse));
 
     university.courses = courses;
-
-    std::cout << "T2" << std::endl;
 
     /* External participants // just to declare and instantiate, not going to
     actually register them in the university since it defeats the purpose
@@ -324,8 +310,6 @@ void DataGen::generateDataFor(University& university) {
         "2025-09-13", externals.at(2), "diego.martinez@uba.ar");
     externalOnlineRegistrations.insert({ereg->getId(), ereg});
 
-    std::cout << "T3" << std::endl;
-
     // IN-PERSON REGISTRATIONS
     std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<StudentParticipant>>> inPersonStudentRegistrations;
     std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<ProfessorParticipant>>> inPersonProfessorRegistrations;
@@ -374,8 +358,6 @@ void DataGen::generateDataFor(University& university) {
         "2025-03-25", externals.at(1), false);
     inPersonExternalRegistrations.insert({ipEReg->getId(), ipEReg});
 
-        std::cout << "T3" << std::endl;
-
     // WORKSHOPS
 
     // Add some external guest registrations
@@ -383,14 +365,36 @@ void DataGen::generateDataFor(University& university) {
     workshops.at(0)->addGuestRegistration(externalOnlineRegistrations.at(1));
     // Add some students attendees registrations
     workshops.at(0)->addAttendeeRegistration(studentOnlineRegistrations.at(2));
-    workshops.at(0)->addAttendeeRegistration(inPersonStudentRegistrations.at(1));
+    workshops.at(1)->addAttendeeRegistration(inPersonStudentRegistrations.at(1));
 
     // LECTURES
 
     // Add student attendee registrations
     lectures.at(0)->addAttendeeRegistration(studentOnlineRegistrations.at(1));
     lectures.at(0)->addAttendeeRegistration(inPersonStudentRegistrations.at(1));
-    lectures.at(0)->addAttendeeRegistration(inPersonStudentRegistrations.at(2));
+    lectures.at(1)->addAttendeeRegistration(inPersonStudentRegistrations.at(2));
+
+    // FAIRS
+
+    // Add external guests (attendees)
+    // fairs.at(0)->addAttendeeRegistration(externalOnlineRegistrations.at(0)); // caroline.grayson@stanford.edu
+    // fairs.at(1)->addAttendeeRegistration(inPersonExternalRegistrations.at(1)); // diego.martinez@uba.ar
+
+    // Add presenters (could be of any participant type)
+    fairs.at(0)->addPresenterRegistration(inPersonStudentRegistrations.at(0)); // university.students.at(1)
+    // fairs.at(0)->addPresenterRegistration(professorOnlineRegistrations.at(1)); // sarah.james@example.com
+    // fairs.at(1)->addPresenterRegistration(inPersonExternalRegistrations.at(2)); // diego.martinez@uba.ar
+
+    // COURSES
+
+    // Add attendee registrations
+    courses.at(0)->addAttendeeRegistration(studentOnlineRegistrations.at(0)); // thomas.wayne@example.com
+    courses.at(1)->addAttendeeRegistration(inPersonStudentRegistrations.at(1)); // university.students.at(2)
+
+    // Add tutor registrations
+    courses.at(0)->addTutorRegistration(studentOnlineRegistrations.at(1));
+    courses.at(1)->addTutorRegistration(studentOnlineRegistrations.at(1));
+    courses.at(1)->addTutorRegistration(inPersonStudentRegistrations.at(2));
 }
 
 /*

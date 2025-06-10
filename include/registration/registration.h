@@ -20,15 +20,18 @@ class Registration : public RegistrationBase {
     /* asserts inheritage for the template */
     static_assert(std::is_base_of<Participant, ParticipantType>::value, "<ParticipantType> of Registration must be derived from Participant class");
 protected:
-    /* user input based constructor */
-    Registration (int id, const std::unordered_map<int, std::shared_ptr<ParticipantType>>& availableParticipants) : RegistrationBase(id), participant(Prompt::forType<ParticipantType>::getSelectableFromInput("Select the registered participant:", availableParticipants)) {};
+    /* user input when there aren't available participants */
+    Registration (int id) : RegistrationBase(id) {};
+
+    /* user input based constructor when there are available participants*/
+    Registration (int id, const std::unordered_map<int, std::shared_ptr<ParticipantType>>& availableParticipants) : RegistrationBase(id, Prompt::forType<ParticipantType>::getSelectableFromInput("Select the registered participant:", availableParticipants)) {};
 
     /* default constructor */
-    Registration (int id, const std::string& date, const std::shared_ptr<ParticipantType>& participant) : RegistrationBase(id, date), participant(participant) {};
+    Registration (int id, const std::string& date, const std::shared_ptr<ParticipantType>& participant) : RegistrationBase(id, date, participant) {};
 public:
     void printSelf() const override;
 private:
-    std::shared_ptr<ParticipantType> participant;
+    // std::shared_ptr<ParticipantType> participant;
 };
 
 #endif

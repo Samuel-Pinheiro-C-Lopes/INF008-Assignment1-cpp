@@ -24,6 +24,14 @@ void CourseEvent::printSelf() const {
     this->subject->printSelf();
 }
 
+bool CourseEvent::addTutorRegistration(const std::shared_ptr<Registration<StudentParticipant>>& tutorRegistration) {
+    return Event<StudentParticipant>::addRegistrationTo<Registration<StudentParticipant>>(this->tutorsRegistrations, tutorRegistration);
+}
+
+std::vector<int> CourseEvent::getTutorsKeys() {
+    return Event<StudentParticipant>::getParticipantsKeysFrom(this->tutorsRegistrations);
+}
+
 /*
 CourseEvent::CourseEvent(std::string name, int vacancies, std::string date, const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) : Event(nextId(), name, vacancies, date), professor(CourseEvent::validateProfessor(professor, subject) ? professor : nullptr ), subject(subject) {
     if (this->professor == nullptr) {

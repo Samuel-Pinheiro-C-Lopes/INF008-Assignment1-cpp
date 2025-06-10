@@ -186,6 +186,10 @@ void Prompt::printPartialSeparator() {
     std::cout << "-----" << std::endl;
 }
 
+void Prompt::printHugeSeparator() {
+    std::cout << "------------------" << std::endl;
+}
+
 template class Prompt::forType<Subject>;
 template class Prompt::forType<Participant>;
 template class Prompt::forType<StudentParticipant>;

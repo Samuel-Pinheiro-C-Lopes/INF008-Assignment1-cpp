@@ -8,6 +8,7 @@
 
 template<typename ParticipantType>
 int InPersonEventRegistration<ParticipantType>::currentId = 0;
+
 template<typename ParticipantType>
 int InPersonEventRegistration<ParticipantType>::nextId() {
     return InPersonEventRegistration<ParticipantType>::currentId++;

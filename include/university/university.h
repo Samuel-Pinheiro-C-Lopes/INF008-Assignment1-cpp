@@ -42,23 +42,28 @@ public:
 
     /* University registrations. Probably will only need to call the empty constructor of everyone
      * with the available choices. */
-    void registerProfessor();
-    void registerStudent();
+    bool registerProfessor();
+    bool registerStudent();
 
-    void registerSubject();
+    bool registerSubject();
 
-    void registerWorkshop();
-    void registerLecture();
-    void registerFair();
-    void registerCourse();
+    bool registerWorkshop();
+    bool registerLecture();
+    bool registerFair();
+    bool registerCourse();
 
     /* Specific events registrations. */
 
-    void registerAttendeeToWorkshop();
-    void registerAttendeeToToLecture();
-    void registerPresenterToFair();
-    void registerAttendeeToToFair();
-    void registerStudentToCourse();
+    // Workshop
+    bool registerAttendeeToWorkshop();
+    bool registerGuestToWorkshop();
+    // Lecture
+    bool registerAttendeeToToLecture();
+    // Fair
+    bool registerPresenterToFair();
+    bool registerAttendeeToToFair();
+    // Course
+    bool registerAttendeToCourse();
 
 private:
     int nextId() override { return 0; }
@@ -87,9 +92,10 @@ private:
     template<typename whatToPrintType>
     static void genericPrinter(const std::string& whatToPrint, const std::unordered_map<int, std::shared_ptr<whatToPrintType>>& sourceToPrintFrom) {
         static_assert(std::is_base_of<Entity, whatToPrintType>::value, "<whatToPrintType> of University::genericPrinter([...]) must be derived from Entity class");
-        std::cout << whatToPrint << " currently registered: " << std::endl << std::endl;
+        Prompt::printHugeSeparator();
+        std::cout << whatToPrint << " CURRENTLY REGISTERED: " << std::endl;
+        Prompt::printHugeSeparator();
         Prompt::forType<whatToPrintType>::printSelectables(sourceToPrintFrom);
-        std::cout << std::endl;
     }
 
     // so that the data gen can actually work with an university and fill it

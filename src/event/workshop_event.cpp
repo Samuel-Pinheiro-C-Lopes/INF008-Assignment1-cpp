@@ -4,6 +4,7 @@
 #include"professor_participant.h"
 
 #include<iostream>
+#include<vector>
 
 /* Default id sequence */
 int WorkshopEvent::currentId = 0;
@@ -28,4 +29,9 @@ void WorkshopEvent::printSelf() const {
 
 bool WorkshopEvent::addGuestRegistration(const std::shared_ptr<Registration<ExternalParticipant>>& guestRegistration) {
         return Event<StudentParticipant>::addRegistrationTo<Registration<ExternalParticipant>>(this->guestsRegistrations, guestRegistration);
+}
+
+std::vector<int> WorkshopEvent::getGuestsKeys() const {
+    return Event<StudentParticipant>::getParticipantsKeysFrom
+        <Registration<ExternalParticipant>>(this->guestsRegistrations);
 }

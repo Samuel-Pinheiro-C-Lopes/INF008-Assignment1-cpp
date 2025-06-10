@@ -26,6 +26,8 @@ public:
 
     static void printPartialSeparator();
 
+    static void printHugeSeparator();
+
     template<typename SelectableType>
     class forType final {
             static_assert(std::is_base_of<Entity, SelectableType>::value, "<SelectableType> from Prompt must derive from the Entity class.");

@@ -11,6 +11,7 @@
 #include<memory>
 #include<string>
 #include<unordered_map>
+#include<vector>
 
 class WorkshopEvent : public Event<StudentParticipant> {
 public:
@@ -19,6 +20,7 @@ public:
     WorkshopEvent(const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects, const std::unordered_map<int, std::shared_ptr<ProfessorParticipant>>& availableProfessors) : Event(nextId()), subject(Prompt::forType<Subject>::getSelectableFromInput("Select the subject for the workshop:", availableSubjects)), professors(Prompt::forType<ProfessorParticipant>::getSelectablesFromInput("Select the professors for the workshop:", availableProfessors)) {};
 
     bool addGuestRegistration(const std::shared_ptr<Registration<ExternalParticipant>>& guestRegistration);
+    std::vector<int> getGuestsKeys() const;
     void printSelf() const override;
 private:
     static int currentId;

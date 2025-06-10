@@ -20,7 +20,7 @@ template<typename AttendeeType>
 void Event<AttendeeType>::printSelf() const {
     EventBase::printSelf();
     std::cout << "Attendees: " << std::endl;
-    for (const std::pair<int, std::shared_ptr<Registration<AttendeeType>>> pair : guestsRegistrations) {
+    for (const std::pair<int, std::shared_ptr<Registration<AttendeeType>>> pair : this->attendeesRegistrations) {
         pair.second->printSelf();
         std::cout << std::endl;
     }
@@ -49,8 +49,13 @@ bool Event<ParticipantType>::registerParticipant(const std::shared_ptr<Participa
  * otherwise */
 
 template<typename AttendeeType>
-bool Event<AttendeeType>::addAttendeeRegistration(const std::shared_ptr<Registration<AttendeeType>>& guestRegistration) {
-    return Event<AttendeeType>::addRegistrationTo<Registration<AttendeeType>>(this->guestsRegistrations, guestRegistration);
+bool Event<AttendeeType>::addAttendeeRegistration(const std::shared_ptr<Registration<AttendeeType>>& attendeeRegistration) {
+    return Event<AttendeeType>::addRegistrationTo<Registration<AttendeeType>>(this->attendeesRegistrations, attendeeRegistration);
+}
+
+template<typename AttendeeType>
+std::vector<int> Event<AttendeeType>::getAttendesKeys() const {
+    return Event<AttendeeType>::getParticipantsKeysFrom<Registration<AttendeeType>>(this->attendeesRegistrations);
 }
 
 /* telling the compiler which types

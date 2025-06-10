@@ -11,10 +11,6 @@
 template<typename ParticipantType>
 void Registration<ParticipantType>::printSelf() const {
     RegistrationBase::printSelf();
-    Prompt::printPartialSeparator();
-    std::cout << "Participant: " << std::endl;
-    this->participant->printSelf();
-    Prompt::printPartialSeparator();
 }
 
 template class Registration<Participant>;

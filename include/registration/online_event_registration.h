@@ -14,7 +14,10 @@ template<typename ParticipantType>
 class OnlineEventRegistration : public Registration<ParticipantType> {
 public:
     void printSelf() const override;
-    /* input based constructor */
+    /* input based when there is no available participants */
+    OnlineEventRegistration() : Registration<ParticipantType>(nextId()), contactEmail(Prompt::getTextFromInput("Enter with a e-mail for contact:")) {};
+
+    /* input based constructor based on available participants */
     OnlineEventRegistration(const std::unordered_map<int, std::shared_ptr<ParticipantType>>& availableParticipants) : Registration<ParticipantType>(nextId(), availableParticipants), contactEmail(Prompt::getTextFromInput("Enter with a e-mail for contact:")) {};
 
     /* default constructor */

@@ -10,7 +10,6 @@
 /* Default id sequence */
 int Subject::currentId = 0;
 int Subject::nextId() {
-    std::cout << Subject::currentId << std::endl;
     return Subject::currentId++;
 }
 

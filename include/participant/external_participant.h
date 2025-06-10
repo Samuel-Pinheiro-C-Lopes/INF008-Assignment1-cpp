@@ -8,7 +8,9 @@
 class ExternalParticipant : public Participant {
 public:
     ExternalParticipant() : Participant(nextId()), originUniversity(originUniversityFromInput()) {};
+
     ExternalParticipant(std::string name, std::string cpf, std::string originUniversity) : Participant(nextId(), name, cpf), originUniversity(originUniversity) {};
+
     void printSelf() const override;
 private:
     static int currentId;

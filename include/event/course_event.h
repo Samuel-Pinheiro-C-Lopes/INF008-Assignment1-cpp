@@ -9,6 +9,7 @@
 
 #include<string>
 #include<memory>
+#include<vector>
 
 class CourseEvent : public Event<StudentParticipant> {
 public:
@@ -18,6 +19,11 @@ public:
     CourseEvent(const std::string& name, const int vacancies, const std::string& date, const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) : Event(nextId(), name, vacancies, date), professor(CourseEvent::validateProfessor(professor, subject, VERBOSE) ? professor : nullptr ), subject(subject) {};
 
     CourseEvent(const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects, const std::unordered_map<int, std::shared_ptr<ProfessorParticipant>>& availableProfessors) : Event(nextId()), subject(Prompt::forType<Subject>::getSelectableFromInput("Select the course subject:", availableSubjects)), professor(Prompt::forType<ProfessorParticipant>::getSelectableFromInput("Select the professor that is going to teach this course:", availableProfessors)) {};
+
+    bool addTutorRegistration(const std::shared_ptr<Registration<StudentParticipant>>& tutorRegistration);
+
+    std::vector<int> getTutorsKeys();
+
     void printSelf() const override;
 protected:
     int nextId() override;
@@ -26,6 +32,8 @@ private:
     static int currentId;
     std::shared_ptr<Subject> subject;
     std::shared_ptr<ProfessorParticipant> professor;
+    std::unordered_map<int, std::shared_ptr<Registration<StudentParticipant>>> tutorsRegistrations;
+
     /* maybe that validation is better in the Professor class? Debatable... */
     static bool validateProfessor(const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject, const bool verbose);
 };
