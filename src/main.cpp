@@ -20,25 +20,49 @@
 #include<limits>
 
 int main (int argc, char* argv[]) {
+    static const std::unordered_map<int, std::string> mainMenuOptions = {
+        { 0, "Exit;" },
+        { 1, "Registration Menu;" },
+        { 2, "Reports Menu;" },
+        { 3, "Registration to Events Menu. "}
+    }; 
+    static const std::unordered_map<int, std::string> reportsMenuOptions = {
+        { 0, "Exit;"},
+        { 1, "Print Professors;" },
+        { 2, "Print Students;" }, 
+        { 3, "Print Subjects;" },
+        { 4, "Print Workshop Events;" },
+        { 5, "Print Lecture Events;" },
+        { 6, "Print Fair Events;" },
+        { 7, "Print Course Events;" },
+        { 8, "Print all University Data." }
+    };
+    static const std::unordered_map<int, std::string> registrationsMenuOptions = {
+        { 0, "Exit;"},
+        { 1, "Register a Professor;" },
+        { 2, "Register a Student;" }, 
+        { 3, "Register a Subject;" },
+        { 4, "Register a Workshop Event;" },
+        { 5, "Register a Lecture Event;" },
+        { 6, "Register a Fair Event;" },
+        { 7, "Register a Course Event." }
+    };
+    static const std::unordered_map<int, std::string> eventRegistrationsMenuOptions = {
+        { 0, "Exit;"},
+        { 1, "Register Attendee to a Workshop;" },
+        { 2, "Register Guest to a Workshop;" }, 
+        { 3, "Register Attendee to Lecture;" },
+        { 4, "Register Presenter to Fair;" },
+        { 5, "Register Attendee to Fair;" },
+        { 6, "Register Attendee to Course." }
+    };
+
     std::cout << "Welcome to the events & participants manager for the university! Firstly, input a name for the universisty." << std::endl;
     University university;
     DataGen::generateDataFor(university);
     int input = -1;
-
     while (input != 0) {
-
-        std::cout
-        << "Enter with the desired option:" << std::endl
-        << "[1]: Register a professor;" << std::endl
-        << "[2]: Register a student;" << std::endl
-        << "[3] Register a subject for the university;" << std::endl
-        << "[4] Register a Workshop event;" << std::endl
-        << "[5] Register a Lecture event;" << std::endl
-        << "[6] Register a Fair event;" << std::endl
-        << "[7] Register a Course event;" << std::endl
-        << "[8] Print whole university;" << std::endl
-        << "[0] Exit." << std::endl
-        << "Your option: ";
+        input = Prompt::getOptionFromInput(mainMenuOptions);
 
         if (!(std::cin >> input) || input > 8 || input < 0) {
             std::cin.clear();
@@ -46,6 +70,19 @@ int main (int argc, char* argv[]) {
             std::cout << "Please enter with a valid option..." << std::endl;
             input = -1;
             continue;
+        }
+
+        switch (input) {
+            case (1): {
+                input = Prompt::getOptionFromInput(registrationsMenuOptions);
+                break;
+            } case (2): {
+                input = Prompt::getOptionFromInput(reportsMenuOptions);
+                break;
+            } case (3): {
+                input = Prompt::getOptionFromInput(eventRegistrationsMenuOptions);
+                break;
+            }
         }
 
         switch(input) {

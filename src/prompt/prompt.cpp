@@ -190,6 +190,25 @@ void Prompt::printHugeSeparator() {
     std::cout << "------------------" << std::endl;
 }
 
+int Prompt::getOptionFromInput(const std::unordered_map<int, std::string>& options) {
+    int input = -1;
+
+    while (input == -1) {
+        std::cout << "Select an options: " << std::endl;
+        for (const std::pair<const int, std::string>& pair : options)
+            std::cout << "[" << pair.first << "]: " << pair.second << std::endl;
+        
+        if (!(std::cin >> input) || options.find(input) != options.end()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Please enter with a valid option..." << std::endl;
+            input = -1;
+        }
+    }
+
+    return input;
+}
+
 template class Prompt::forType<Subject>;
 template class Prompt::forType<Participant>;
 template class Prompt::forType<StudentParticipant>;

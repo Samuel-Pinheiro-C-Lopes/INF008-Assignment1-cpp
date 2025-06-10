@@ -58,10 +58,10 @@ public:
     bool registerAttendeeToWorkshop();
     bool registerGuestToWorkshop();
     // Lecture
-    bool registerAttendeeToToLecture();
+    bool registerAttendeeToLecture();
     // Fair
     bool registerPresenterToFair();
-    bool registerAttendeeToToFair();
+    bool registerAttendeeToFair();
     // Course
     bool registerAttendeToCourse();
 

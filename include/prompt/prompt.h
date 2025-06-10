@@ -21,12 +21,14 @@ public:
     static bool getFlagFromInput(const std::string& title);
     /* gets a number from user input */
     static int getIntFromInput(const std::string& title);
-
+    
     static void printFullSeparator();
 
     static void printPartialSeparator();
 
     static void printHugeSeparator();
+
+    static int getOptionFromInput(const std::unordered_map<int, std::string>& options);
 
     template<typename SelectableType>
     class forType final {
