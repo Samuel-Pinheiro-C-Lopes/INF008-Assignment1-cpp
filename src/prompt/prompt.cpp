@@ -206,10 +206,12 @@ std::string Prompt::getTextFromInput(
 
 /* gets int from input */
 int Prompt::getIntFromInput(
-    const std::string& title
+    const String& title
 ) {
+
     int intValue;
-    std::cout << "│" << title << std::endl;
+    std::cout << "│" << title << std::endl
+              << "│" << "Your input: ";
 
     while(!Prompt::handleLastCinInput(intValue));
 
@@ -330,12 +332,12 @@ bool Prompt::handleLastCinInput(
     int& input
 ) {
     int snapshot = input;
-    int intValue;
 
-    if(!(std::cin >> intValue)) {
+    if(!(std::cin >> input)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "│" << "Please enter a valid int value..." << std::endl;
+        input = snapshot;
         return false;
     }
 

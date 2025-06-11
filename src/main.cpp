@@ -48,6 +48,7 @@ int main (int argc, char* argv[]) {
 
     Prompt::clearScreen();
     int input = -1;
+    int month = 0;
     while (input != 0) {
         Prompt::printSelectablesAsOptions(University::mainMenuOptions);
 
@@ -144,6 +145,13 @@ int main (int argc, char* argv[]) {
                         }
                         case (8): {
                             university.printSelf();
+                            break;
+                        }
+                        case (9): {
+                            std::cout << "│" << "Enter with the search month: ";
+                            if (!Prompt::Prompt::handleLastCinInput(month, 1, 12))
+                                continue;
+                            university.printEventsByMonth(month);
                             break;
                         }
                     }

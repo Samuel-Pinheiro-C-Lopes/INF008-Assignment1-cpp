@@ -98,7 +98,7 @@ private:
 
     template<typename T, typename G>
     void pushBackEventsByMonthTo(
-        Vector<Ptr<T>> target,
+        Vector<Ptr<T>>& target,
         Map<int, Ptr<G>> source,
         int month
     ) {

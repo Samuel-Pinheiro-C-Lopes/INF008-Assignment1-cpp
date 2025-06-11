@@ -41,7 +41,8 @@ const Map<int, String> University::reportsMenuOptions = {
     { 5, "Print Lecture Events;" },
     { 6, "Print Fair Events;" },
     { 7, "Print Course Events;" },
-    { 8, "Print all University Data." }
+    { 8, "Print all University Data." },
+    { 9, "Print all the events per month." }
 };
 
 const Map<int, String> University::registrationsMenuOptions = {

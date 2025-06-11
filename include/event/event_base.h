@@ -24,7 +24,7 @@ public:
 
     EventBase(const int id) : NamedEntity(id),
         vacancies(Prompt::getIntFromInput("Enter with the number of vacancies for the event:")),
-        date(Prompt::getTextFromInput("Enter with the date for the event (format: [dd/MM/yyy] or [dd-MM-yyyy]): ")) {};
+        date(Prompt::getTextFromInput("Enter with the date for the event (format: [yyyy/MM/dd] or [yyyy-MM-dd]): ")) {};
 
     void printSelf() const override;
     const Date& getDate() const;
