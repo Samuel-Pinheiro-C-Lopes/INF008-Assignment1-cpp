@@ -67,6 +67,8 @@ const Map<int, String> University::eventRegistrationsMenuOptions = {
 
 // Simply prints all the university contents
 void University::printSelf() const {
+    Prompt::clearScreen();
+
     // header
     Prompt::printFullSeparator();
     std::cout << "UNIVERSITY: ";
@@ -212,10 +214,10 @@ bool University::registerGuestToWorkshop() {
     if (inPerson)
         return toRegisterWorkshop->
         addGuestRegistration(
-            std::make_shared<InPersonEventRegistration<ExternalParticipant>>());
+            std::make_shared<InPersonEventRegistration<ExternalParticipant>>(std::make_shared<ExternalParticipant>()));
 
     return toRegisterWorkshop->
-    addGuestRegistration(std::make_shared<OnlineEventRegistration<ExternalParticipant>>());
+    addGuestRegistration(std::make_shared<OnlineEventRegistration<ExternalParticipant>>(std::make_shared<ExternalParticipant>()));
 }
 
 // Lecture
@@ -260,9 +262,9 @@ bool University::registerAttendeeToFair() {
     bool inPerson = Prompt::getFlagFromInput("Will the attendee come in person to the event?");
 
     if (inPerson)
-        return toRegisterFair->addAttendeeRegistration(std::make_shared<InPersonEventRegistration<ExternalParticipant>>());
+        return toRegisterFair->addAttendeeRegistration(std::make_shared<InPersonEventRegistration<ExternalParticipant>>(std::make_shared<ExternalParticipant>()));
     
-    return toRegisterFair->addAttendeeRegistration(std::make_shared<OnlineEventRegistration<ExternalParticipant>>());
+    return toRegisterFair->addAttendeeRegistration(std::make_shared<OnlineEventRegistration<ExternalParticipant>>(std::make_shared<ExternalParticipant>()));
 }
 
 // Course

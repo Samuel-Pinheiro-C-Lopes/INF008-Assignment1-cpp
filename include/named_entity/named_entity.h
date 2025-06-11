@@ -14,7 +14,7 @@ private:
     const String name;
     // std::string nameFromInput(); // using prompt now... it's cleaner
 protected:
-    NamedEntity(int id) : Entity(id), name(Prompt::getTextFromInput("Enter the name field:")) {};
+    NamedEntity(int id) : Entity(id), name(Prompt::getTextFromInput("Enter the name field: ")) {};
     NamedEntity(int id, String name) : Entity(id), name(name) {};
     ~NamedEntity() {};
 public:

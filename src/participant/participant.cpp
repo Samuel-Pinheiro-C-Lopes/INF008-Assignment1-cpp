@@ -4,8 +4,7 @@
 
 void Participant::printSelf() const {
     NamedEntity::printSelf();
-    std::cout << std::endl;
-    std::cout << "CPF: " << cpf.getValue() << "." << std::endl;
+    std::cout << "│" << "CPF: " << cpf.getValue() << "." << std::endl;
 }
 
 bool Participant::isValid() const {

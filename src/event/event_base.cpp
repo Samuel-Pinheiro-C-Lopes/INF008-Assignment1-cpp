@@ -6,11 +6,11 @@
 #include<iostream>
 
 void EventBase::printSelf() const {
-    std::cout << "Event name: ";
+    std::cout << "│" << "Event name: ";
     NamedEntity::printSelf();
-    std::cout << std::endl;
-    std::cout << "Vacancies: " << vacancies << "." << std::endl;
-    std::cout << "Date: " << this->date.getValue() << "." << std::endl;
+    std::cout << std::endl << "│" << std::endl;
+    std::cout << "│"<< "Vacancies: " << vacancies << "." << std::endl;
+    std::cout << "│" << "Date: " << this->date.getValue() << "." << std::endl;
 }
 
 const Date& EventBase::getDate() const {

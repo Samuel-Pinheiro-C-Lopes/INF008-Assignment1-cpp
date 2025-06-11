@@ -14,7 +14,7 @@ int Subject::nextId() {
 }
 
 void Subject::printSelf() const {
-    std::cout << "Subject: ";
+    std::cout << "│"<< "Subject: ";
     NamedEntity::printSelf();
     std::cout << "." << std::endl;
 }

@@ -17,7 +17,7 @@ int FairEvent::nextId() {
 
 void FairEvent::printSelf() const {
     Event::printSelf();
-    std::cout << "Presenters: " << std::endl;
+    std::cout << "│" << "Presenters: " << std::endl;
     for (const std::pair<const int, Ptr<Registration<StudentParticipant>>>& pair : presentersRegistrations) {
         pair.second->printSelf();
         std::cout << std::endl;

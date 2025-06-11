@@ -117,10 +117,16 @@ private:
     ) {
         static_assert(std::is_base_of<Entity, T>::value, "<T> of University::genericPrinter([...]) must be derived from Entity class");
 
-        Prompt::printHugeSeparator();
-        std::cout << whatToPrint << " CURRENTLY REGISTERED: " << std::endl;
-        Prompt::printHugeSeparator();
+        std::cout << "┌────────────────────────────" << std::endl;
+        std::cout << "│" << std::endl;
+        //Prompt::printHugeSeparator();
+        std::cout << "│" << whatToPrint << " CURRENTLY REGISTERED: " << std::endl
+                  << "│" << std::endl
+                  << "│" << std::endl;
+        //Prompt::printHugeSeparator();
         Prompt::forType<T>::printSelectables(sourceToPrintFrom);
+        std::cout << "│" << std::endl;
+        std::cout << "└────────────────────────────";
     }
 
     // so that the data gen can actually work with an university and fill it

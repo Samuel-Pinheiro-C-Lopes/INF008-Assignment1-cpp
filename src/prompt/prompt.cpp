@@ -26,25 +26,31 @@ Ptr<T> Prompt::forType<T>::getSelectableFromInput(
     Ptr<T> selected = nullptr;
     int input = -1;
 
-    std::cout << selectionTitle << std::endl;
-
-    /* Available options */
-    Prompt::forType<T>::printSelectablesAsOptions(availableSelectables);
-
     while (input != 0) {
+        std::cout << "┌────────────────────────────" << std::endl
+                  << "│" << std::endl
+                  << "│  "<< selectionTitle << std::endl
+                  << "│" << std::endl;
+
+        /* Available options */
+        Prompt::forType<T>::printSelectablesAsOptions(availableSelectables);
+
         /* user selection */
-        std::cout << "Enter a selection [0 to skip it]: ";
+        std::cout << "│" << "Enter a selection [0 to finish it]: ";
 
         /* If parsing fails or it isn't an option */
-        if (!Prompt::forType<T>::handleLastCinInput(input, availableSelectables) && input != 0) {
-            continue;
-        } else {
+        if (!Prompt::forType<T>::handleLastCinInput(input, availableSelectables)) {
             if (input != 0)
-                selected = availableSelectables.at(input);
+                continue;
+            else
+                break;
+        } else {
+            selected = availableSelectables.at(input);
             break;
         }
     }
 
+    Prompt::clearScreen();
     return selected;
 }
 
@@ -57,26 +63,32 @@ Map<int, Ptr<T>> Prompt::forType<T>::getSelectablesFromInput(
     Map<int, Ptr<T>> currentSelected;
     int input = -1;
 
-    std::cout << selectionTitle << std::endl;
-
     while (input != 0) {
+        std::cout << "┌────────────────────────────" << std::endl
+                  << "│"<< selectionTitle << std::endl
+                  << "│" << std::endl;
+
         /* Available options */
-        std::cout << "Currently available:" << std::endl;
+        std::cout << "│" << "Currently available:" << std::endl;
         Prompt::forType<T>::printSelectablesAsOptions(currentAvailable);
 
-        Prompt::printPartialSeparator();
+        // Prompt::printPartialSeparator();
+        std::cout << "│" << std::endl;
 
         /* Currently selected */
-        std::cout << "Currently selected:" << std::endl;
+        std::cout << "│" << "Currently selected:" << std::endl;
         Prompt::forType<T>::printSelectablesAsOptions(currentSelected);
 
-        Prompt::printPartialSeparator();
+        std::cout << "│" << std::endl;
+        // Prompt::printPartialSeparator();
 
         /* user selection */
-        std::cout << "Enter a selection ['0' finishes]: ";
+        std::cout << "│" << "Enter a selection ['0' finishes]: ";
 
         if (!Prompt::forType<T>::handleLastCinInput(input, currentAvailable, currentSelected))
             continue;
+
+        Prompt::clearScreen();
 
         if (input == 0)
             break;
@@ -84,9 +96,14 @@ Map<int, Ptr<T>> Prompt::forType<T>::getSelectablesFromInput(
         currentSelected[input] = std::move(currentAvailable[input]);
         currentAvailable.erase(input);
         // currentSelected.insert(currentAvailable.extract(input)); // above adopted to be friendly toward older c++ compilers
-        std::cout << std::endl << std::endl << "----------" << std::endl << "Next Selection:" << std::endl;
+        std::cout << "│" << std::endl
+                  << "│" << std::endl << "Next Selection..." << std::endl
+                  << "│" << std::endl
+                  << "│" << std::endl
+                  << "└────────────────────────────";
     }
 
+    Prompt::clearScreen();
     // in plain old c this would not work, but since
     // there is RVO - return value optimization - it will.
     return currentSelected;
@@ -96,44 +113,56 @@ template<typename T>
 void Prompt::forType<T>::printSelectablesAsOptions(
     const Map<int, Ptr<T>>& selectables
 ) {
+    std::cout << "┌────────────────────────────" << std::endl;
+    std::cout << "│" << std::endl;
     for (typename Map<int, Ptr<T>>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        std::cout << "Option [" << (*itr).first << "]: " << std::endl;
+        std::cout << "│" << "Option [" << (*itr).first << "]: " << std::endl;
         (*itr).second->printSelf();
+        std::cout << "│" << std::endl;
     }
+    std::cout << "│" << std::endl
+              << "│" << std::endl;
 }
 
 void Prompt::printSelectablesAsOptions(
     const Map<int, String>& selectables
 ) {
+    std::cout << "┌────────────────────────────" << std::endl;
+    std::cout << "│" << std::endl;
+    std::cout << "│" << std::endl;
     for (Map<int, String>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        std::cout << "Option [" << (*itr).first << "]: " << (*itr).second << std::endl;
+        std::cout << "│" << "Option [" << (*itr).first << "]: " << (*itr).second << std::endl;
     }
+    std::cout << "│" << std::endl
+              << "│" << std::endl;
 }
 
 template<typename T>
 void Prompt::forType<T>::printSelectables(
     const Map<int, Ptr<T>>& selectables
 ) {
-    std::cout << std::endl;
+    std::cout << "│" << std::endl;
     for (typename Map<int, Ptr<T>>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        Prompt::printFullSeparator();
+        //Prompt::printFullSeparator();
         (*itr).second->printSelf();
-        Prompt::printFullSeparator();
-        std::cout << std::endl;
+        //Prompt::printFullSeparator();
+        std::cout << "│" << std::endl;
     }
-    std::cout << std::endl;
+    std::cout << "│" << std::endl;
 }
 
 template<typename T>
 void Prompt::forType<T>::printSelectables(
     const Vector<T>& selectables
 ) {
-    std::cout << std::endl;
+    std::cout << "│" << std::endl;
     for (typename Vector<T>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        Prompt::printFullSeparator();
+        // Prompt::printFullSeparator();
+        std::cout << "│" << std::endl;
         (*itr).printSelf();
-        Prompt::printFullSeparator();
-        std::cout << std::endl;
+        std::cout << "│" << std::endl;
+        // Prompt::printFullSeparator();
+        std::cout << "│" << std::endl;
     }
     std::cout << std::endl;
 }
@@ -142,15 +171,18 @@ template<typename T>
 void Prompt::forType<T>::printSelectables(
     const Vector<Ptr<T>>& selectables
 ) {
-    Prompt::printFullSeparator();
-    std::cout << std::endl;
+    std::cout << "│" << std::endl;
+    std::cout << "│" << std::endl;
     for (typename Vector<Ptr<T>>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        Prompt::printFullSeparator();
+        //Prompt::printFullSeparator();
+        std::cout << "│"<< std::endl
+                  << "│" << std::endl;
         (*itr)->printSelf();
-        std::cout << std::endl;
+        std::cout << "│" << std::endl;
     }
-    Prompt::printFullSeparator();
-    std::cout << std::endl;
+    // Prompt::printFullSeparator();
+    std::cout << "│" << std::endl;
+    std::cout << "│" << std::endl;
 
 }
 
@@ -160,7 +192,7 @@ void Prompt::forType<T>::printSelectables(
 std::string Prompt::getTextFromInput(
     const std::string& title
 ) {
-    std::cout << title << std::endl;
+    std::cout << "│" << title;
     std::string text;
 
     if (std::cin.peek() == '\n') {
@@ -177,7 +209,7 @@ int Prompt::getIntFromInput(
     const std::string& title
 ) {
     int intValue;
-    std::cout << title << std::endl;
+    std::cout << "│" << title << std::endl;
 
     while(!Prompt::handleLastCinInput(intValue));
 
@@ -190,10 +222,10 @@ bool Prompt::getFlagFromInput(
 ) {
     int input = -1;
 
-    std::cout << title << std::endl;
-    std::cout << "[1]: yes" << std::endl;
-    std::cout << "[0]: no" << std::endl;
-    std::cout << "Your answer: ";
+    std::cout << "│" << title << std::endl;
+    std::cout << "│"<< "[1]: yes" << std::endl;
+    std::cout << "│"<< "[0]: no" << std::endl;
+    std::cout << "│"<< "Your answer: ";
 
     while (!Prompt::handleLastCinInput(input, 0, 1));
 
@@ -224,7 +256,7 @@ int Prompt::getOptionFromInput(
     int input = -1;
 
     while (input == -1) {
-        std::cout << "Options Available:" << std::endl;
+        std::cout << "│" << "Options Available:" << std::endl;
         Prompt::printSelectablesAsOptions(options);
         if (!Prompt::handleLastCinInput(input, options))
             continue;
@@ -245,7 +277,7 @@ bool Prompt::forType<T>::handleLastCinInput(
         /* clears any invalid input */
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cerr << "Invalid input. Please try again." << std::endl;
-        std::cout << "Please enter with a valid option between the ones provided!" << std::endl;
+        std::cout << "│" << "Please enter with a valid option between the ones provided!" << std::endl;
         input = snapshot;
         return false;
     }
@@ -265,7 +297,7 @@ bool Prompt::handleLastCinInput(
         /* clears any invalid input */
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cerr << "Invalid input. Please try again." << std::endl;
-        std::cout << "Please enter a valid option between " << rangeStart << " and " << rangeEnd << "." << std::endl;
+        std::cout << "│" << "Please enter a valid option between " << rangeStart << " and " << rangeEnd << "." << std::endl;
         input = snapshot;
         return false;
     }
@@ -286,7 +318,7 @@ bool Prompt::forType<T>::handleLastCinInput(
         /* clears any invalid input */
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cerr << "Invalid input. Please try again." << std::endl;
-        std::cout << "Please enter with a valid option between the ones provided!" << std::endl;
+        std::cout << "│" << "Please enter with a valid option between the ones provided!" << std::endl;
         input = snapshot;
         return false;
     }
@@ -303,7 +335,7 @@ bool Prompt::handleLastCinInput(
     if(!(std::cin >> intValue)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Please enter a valid int value..." << std::endl;
+        std::cout << "│" << "Please enter a valid int value..." << std::endl;
         return false;
     }
 
@@ -322,13 +354,22 @@ bool Prompt::handleLastCinInput(
         /* clears any invalid input */
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cerr << "Invalid input. Please try again." << std::endl;
-        std::cout << "Please enter with a valid option between the ones provided!" << std::endl;
+        std::cout << "│" << "Please enter with a valid option between the ones provided!" << std::endl;
         input = snapshot;
         return false;
     }
 
     return true;
 }
+
+void Prompt::clearScreen() {
+    #ifdef _WIN32
+    system("cls");
+    #else
+    system("clear");
+    #endif
+}
+
 
 template class Prompt::forType<Subject>;
 template class Prompt::forType<Participant>;

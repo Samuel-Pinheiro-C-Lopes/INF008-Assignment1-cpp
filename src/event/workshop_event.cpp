@@ -16,13 +16,13 @@ void WorkshopEvent::printSelf() const {
     Event<StudentParticipant>::printSelf();
     this->subject->printSelf();
 
-    std::cout << "Professors: " << std::endl;
+    std::cout << "│"<< "Professors: " << std::endl;
     for (const std::pair<int, Ptr<ProfessorParticipant>> pair : this->professors) {
         pair.second->printSelf();
         std::cout << std::endl;
     }
 
-    std::cout << "Guests: " << std::endl;
+    std::cout << "│"<< "Guests: " << std::endl;
     for (const std::pair<int, Ptr<Registration<ExternalParticipant>>> pair : this->guestsRegistrations) {
         pair.second->printSelf();
         std::cout << std::endl;

@@ -34,6 +34,10 @@ public:
         const String& contactEmail
     ) :  Registration<T>(nextId(), date, participant), contactEmail(contactEmail) {};
 
+    OnlineEventRegistration(
+        const Ptr<T>& participant
+    ) : Registration<T>(nextId(), participant) {};
+
 private:
     String contactEmail;
     int nextId() override;

@@ -5,8 +5,12 @@
 #include"entity.h"
 #include"date.h"
 
+#include"alias.h"
+
 #include<string>
 #include<memory>
+
+using namespace alias;
 
 class RegistrationBase : public Entity {
 public:
@@ -15,12 +19,12 @@ public:
 protected:
     RegistrationBase(int id) : Entity(id), date(), participant() {};
 
-    RegistrationBase(int id, const std::shared_ptr<Participant>& participant) : Entity(id), date(), participant(participant) {};
+    RegistrationBase(int id, const Ptr<Participant>& participant) : Entity(id), date(), participant(participant) {};
 
-    RegistrationBase(int id, const std::string& date, const std::shared_ptr<Participant>& participant) : Entity(id), date(date), participant(participant) {};
+    RegistrationBase(int id, const String& date, const Ptr<Participant>& participant) : Entity(id), date(date), participant(participant) {};
 private:
     Date date;
-    std::shared_ptr<Participant> participant;
+    Ptr<Participant> participant;
 };
 
 #endif

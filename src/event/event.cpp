@@ -9,7 +9,7 @@
 template<typename T>
 void Event<T>::printSelf() const {
     EventBase::printSelf();
-    std::cout << "Attendees: " << std::endl;
+    std::cout << "│" << "Attendees: " << std::endl;
     for (const std::pair<int, std::shared_ptr<Registration<T>>>& pair : this->attendeesRegistrations) {
         pair.second->printSelf();
         std::cout << std::endl;

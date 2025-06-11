@@ -12,10 +12,10 @@ int StudentParticipant::nextId() {
 }
 
 void StudentParticipant::printSelf() const {
-    std::cout << "Student name: ";
+    std::cout << "│"<< "Student name: ";
     Participant::printSelf();
 
-    std::cout << "Currently learning the following subjects: " << std::endl;
+    std::cout << "│"<< "Currently learning the following subjects: " << std::endl;
     for (const std::pair<int, std::shared_ptr<Subject>>& pair : this->learningSubjects)
         pair.second->printSelf();
 }

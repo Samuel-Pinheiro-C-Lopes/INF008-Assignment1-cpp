@@ -19,6 +19,9 @@
 #include<string>
 #include<limits>
 
+#include <thread>
+#include <chrono>
+
 /*
  * 1 - prompt function to validate last cin (two overloads until now, yay!)
  * 2 - switchs from main to handle menu done (double yay!) (more overloads for prompt
@@ -32,18 +35,23 @@
 
 int main (int argc, char* argv[]) {
     // Presentation
-    std::cout << "Welcome to the events & participants manager for the university!" << std::endl;
-    std::cout << "First, input a name for the university!" << std::endl;
+    Prompt::clearScreen();
+    std::cout << "┌────────────────────────────" << std::endl;
+    std::cout << "│" << std::endl;
+    std::cout << "│" <<  "Welcome to the events & participants manager for the university!" << std::endl;
+    std::cout << "│" <<  "First, input a name for the university!" << std::endl;
     University university; // default empty constructor fetches the name.
 
     // If it's needed to add some test data
     if(Prompt::getFlagFromInput("Do you want to automatically generate some test data for the university?"))
         DataGen::generateDataFor(university);
 
+    Prompt::clearScreen();
     int input = -1;
     while (input != 0) {
         Prompt::printSelectablesAsOptions(University::mainMenuOptions);
 
+        std::cout << "│" << "Your selection: ";
         if (!Prompt::handleLastCinInput(input, University::mainMenuOptions))
             continue;
 
@@ -56,6 +64,7 @@ int main (int argc, char* argv[]) {
                 case (1): {
                     Prompt::printSelectablesAsOptions(University::registrationsMenuOptions);
 
+                    std::cout << "│" << "Your selection: ";
                     if (!Prompt::handleLastCinInput(input,
                         University::registrationsMenuOptions))
                         continue;
@@ -99,6 +108,7 @@ int main (int argc, char* argv[]) {
                 case (2): {
                     Prompt::printSelectablesAsOptions(University::reportsMenuOptions);
 
+                    std::cout << "│" << "Your selection: ";
                     if (!Prompt::handleLastCinInput(input, University::reportsMenuOptions))
                         continue;
 
@@ -144,6 +154,8 @@ int main (int argc, char* argv[]) {
                 case (3): {
                     Prompt::printSelectablesAsOptions(University::eventRegistrationsMenuOptions);
 
+                    std::cout << "│" << "Your selection: ";
+
                     if (!Prompt::handleLastCinInput(input, University::eventRegistrationsMenuOptions))
                         continue;
 
@@ -179,20 +191,24 @@ int main (int argc, char* argv[]) {
                     break;
                 } // Register to course
                 case (4): {
-                    std::cout << "Trying to write log file..." << std::endl;
+                    std::cout << "│" << "Trying to write log file..." << std::endl;
                     if (university.generateLogFile())
-                        std::cout << "Created file named [university.json] with serialized data." << std::endl;
+                        std::cout << "│" << "Creating file named [university.json] with serialized data." << std::endl;
                     else
-                        std::cout << "Failed to generate log data..." << std::endl;
+                        std::cout << "│" << "Failed to generate log data." << std::endl;
+
                     input = 0;
+                    std::this_thread::sleep_for(std::chrono::seconds(3));
+
                     break;
                 }
             } // main menu switch
         } // loop
         input = -1;
+        Prompt::clearScreen();
     } // application loop
-
-    std::cout << "Exiting..." << std::endl;
+    Prompt::clearScreen();
+    std::cout << "Exited" << std::endl;
     return 0;
 
 

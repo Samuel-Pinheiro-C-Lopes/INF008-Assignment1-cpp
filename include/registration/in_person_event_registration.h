@@ -26,6 +26,11 @@ public:
     ) : Registration<T>(nextId(), availableParticipants), accessibility(Prompt::getFlagFromInput("Do you have any kind of disability? Enter if you need accessibility support:")) {};
 
     InPersonEventRegistration(
+        const Ptr<T>& participant
+    ) : Registration<T>(nextId(), participant),
+        accessibility(Prompt::getFlagFromInput("Do you have any kind of disability? Enter if you need accessibility support:")) {};
+
+    InPersonEventRegistration(
         const String& date,
         const Ptr<T>& participant,
         bool accessibility

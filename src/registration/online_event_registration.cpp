@@ -17,7 +17,7 @@ int OnlineEventRegistration<T>::nextId() {
 template<typename T>
 void OnlineEventRegistration<T>::printSelf() const {
     Registration<T>::printSelf();
-    std::cout << "E-mail for contact: " << this->contactEmail << "." << std::endl;
+    std::cout << "│"<< "E-mail for contact: " << this->contactEmail << "." << std::endl;
 };
 
 template class OnlineEventRegistration<Participant>;

@@ -18,7 +18,7 @@ template<typename T>
 void InPersonEventRegistration<T>::printSelf() const {
     Registration<T>::printSelf();
 
-    std::cout << "Needs accessibility: ";
+    std::cout << "│" << "Needs accessibility: ";
     if (this->accessibility) std::cout << "[YES]." << std::endl;
     else std::cout << "[NO]" << std::endl;
 };

@@ -16,12 +16,12 @@ int LectureEvent::nextId() {
 void LectureEvent::printSelf() const {
     Event<StudentParticipant>::printSelf();
 
-    std::cout << "Professor: " << std::endl;
+    std::cout << "│" << "Professor: " << std::endl;
     Prompt::printPartialSeparator();
     this->professor->printSelf();
     Prompt::printPartialSeparator();
 
-    std::cout << "Lecture Subjects: " << std::endl;
+    std::cout << "│" << "Lecture Subjects: " << std::endl;
     Prompt::printPartialSeparator();
     for (const std::pair<int, Ptr<Subject>>& pair : this->subjects)
         pair.second->printSelf();

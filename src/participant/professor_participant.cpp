@@ -15,10 +15,10 @@ int ProfessorParticipant::nextId() {
 }
 
 void ProfessorParticipant::printSelf() const {
-    std::cout << "Professor name: ";
+    std::cout << "│"<< "Professor name: ";
     Participant::printSelf();
 
-    std::cout << "Currently teaching the following subjects: " << std::endl;
+    std::cout << "│"<< "Currently teaching the following subjects: " << std::endl;
     for (const std::pair<int, Ptr<Subject>>& pair : this->teachingSubjects)
         pair.second->printSelf();
 }

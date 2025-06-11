@@ -43,6 +43,8 @@ public:
 
     static int getOptionFromInput(const Map<int, String>& options);
 
+    static void clearScreen();
+
     template<typename T>
     class forType final {
             static_assert(std::is_base_of<Entity, T>::value, "<T> from Prompt must derive from the Entity class.");
