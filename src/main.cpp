@@ -60,6 +60,7 @@ int main (int argc, char* argv[]) {
             break;
 
         while (input != 0) {
+            Prompt::clearScreen();
             switch (input) {
                 // Registration
                 case (1): {
@@ -70,6 +71,7 @@ int main (int argc, char* argv[]) {
                         University::registrationsMenuOptions))
                         continue;
 
+                    Prompt::clearScreen();
                     // Registration options
                     switch(input) {
                         case (1): {
@@ -102,8 +104,11 @@ int main (int argc, char* argv[]) {
                             break;
                         }
                     }
-                    if (input != 0)
+                    if (input != 0) {
                         input = 1;
+                        Prompt::getTextFromInput("Enter with any key to continue...");
+                        Prompt::clearScreen();
+                    }
                     break;
                 } // register
                 case (2): {
@@ -113,6 +118,7 @@ int main (int argc, char* argv[]) {
                     if (!Prompt::handleLastCinInput(input, University::reportsMenuOptions))
                         continue;
 
+                    Prompt::clearScreen();
                     // Reports options
                     switch (input) {
                         case (1): {
@@ -155,8 +161,11 @@ int main (int argc, char* argv[]) {
                             break;
                         }
                     }
-                    if (input != 0)
+                    if (input != 0) {
                         input = 2;
+                        Prompt::getTextFromInput("Enter with any key to continue...");
+                        Prompt::clearScreen();
+                    }
                     break;
                 } // reports
                 case (3): {
@@ -167,6 +176,7 @@ int main (int argc, char* argv[]) {
                     if (!Prompt::handleLastCinInput(input, University::eventRegistrationsMenuOptions))
                         continue;
 
+                    Prompt::clearScreen();
                     // Registrations to events options
                     switch (input) {
                         case (1): {
@@ -194,8 +204,11 @@ int main (int argc, char* argv[]) {
                             break;
                         }
                     }
-                    if (input != 0)
+                    if (input != 0) {
                         input = 3;
+                        Prompt::getTextFromInput("Enter with any key to continue...");
+                        Prompt::clearScreen();
+                    }
                     break;
                 } // Register to course
                 case (4): {

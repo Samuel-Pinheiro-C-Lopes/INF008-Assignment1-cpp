@@ -122,11 +122,11 @@ private:
         //Prompt::printHugeSeparator();
         std::cout << "│" << whatToPrint << " CURRENTLY REGISTERED: " << std::endl
                   << "│" << std::endl
-                  << "│" << std::endl;
+                  << "│" << "──────────────────────────────" << std::endl;
         //Prompt::printHugeSeparator();
         Prompt::forType<T>::printSelectables(sourceToPrintFrom);
         std::cout << "│" << std::endl;
-        std::cout << "└────────────────────────────";
+        std::cout << "└────────────────────────────" << std::endl;
     }
 
     // so that the data gen can actually work with an university and fill it

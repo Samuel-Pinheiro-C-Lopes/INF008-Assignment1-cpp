@@ -12,7 +12,7 @@ void Event<T>::printSelf() const {
     std::cout << "│" << "Attendees: " << std::endl;
     for (const std::pair<int, std::shared_ptr<Registration<T>>>& pair : this->attendeesRegistrations) {
         pair.second->printSelf();
-        std::cout << std::endl;
+        std::cout << "│" << std::endl;
     }
 }
 

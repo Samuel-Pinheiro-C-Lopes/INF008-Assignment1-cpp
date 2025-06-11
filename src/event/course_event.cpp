@@ -17,11 +17,9 @@ int CourseEvent::nextId() {
 void CourseEvent::printSelf() const {
     Event::printSelf();
     std::cout << "│"<< "Professor: " << std::endl;
-    Prompt::printPartialSeparator();
     if (this->professor)
         this->professor->printSelf();
     else std::cout << "[NOT ASSIGNED]" << std::endl;
-    Prompt::printPartialSeparator();
     std::cout << "│"<< "Course subject: " << std::endl;
     this->subject->printSelf();
 }

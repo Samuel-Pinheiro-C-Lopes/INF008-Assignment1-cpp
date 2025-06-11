@@ -15,17 +15,15 @@ int LectureEvent::nextId() {
 
 void LectureEvent::printSelf() const {
     Event<StudentParticipant>::printSelf();
-
+    std::cout << "│" << std::endl;
     std::cout << "│" << "Professor: " << std::endl;
-    Prompt::printPartialSeparator();
     this->professor->printSelf();
-    Prompt::printPartialSeparator();
-
+    std::cout << "│" << std::endl;
     std::cout << "│" << "Lecture Subjects: " << std::endl;
-    Prompt::printPartialSeparator();
+    std::cout << "│" << std::endl;
     for (const std::pair<int, Ptr<Subject>>& pair : this->subjects)
         pair.second->printSelf();
-    Prompt::printPartialSeparator();
+    std::cout << "│" << std::endl;
 }
 
 Json LectureEvent::serializeSelf() const {

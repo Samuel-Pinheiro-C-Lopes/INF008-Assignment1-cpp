@@ -71,17 +71,11 @@ Map<int, Ptr<T>> Prompt::forType<T>::getSelectablesFromInput(
         /* Available options */
         std::cout << "│" << "Currently available:" << std::endl;
         Prompt::forType<T>::printSelectablesAsOptions(currentAvailable);
-
-        // Prompt::printPartialSeparator();
         std::cout << "│" << std::endl;
-
         /* Currently selected */
         std::cout << "│" << "Currently selected:" << std::endl;
         Prompt::forType<T>::printSelectablesAsOptions(currentSelected);
-
         std::cout << "│" << std::endl;
-        // Prompt::printPartialSeparator();
-
         /* user selection */
         std::cout << "│" << "Enter a selection ['0' finishes]: ";
 
@@ -113,11 +107,12 @@ template<typename T>
 void Prompt::forType<T>::printSelectablesAsOptions(
     const Map<int, Ptr<T>>& selectables
 ) {
-    std::cout << "┌────────────────────────────" << std::endl;
-    std::cout << "│" << std::endl;
     for (typename Map<int, Ptr<T>>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
+       std::cout  << "│─────────────" << std::endl
+                  << "│" << std::endl;
         std::cout << "│" << "Option [" << (*itr).first << "]: " << std::endl;
         (*itr).second->printSelf();
+        std::cout << "│" << std::endl;
         std::cout << "│" << std::endl;
     }
     std::cout << "│" << std::endl
@@ -143,28 +138,13 @@ void Prompt::forType<T>::printSelectables(
 ) {
     std::cout << "│" << std::endl;
     for (typename Map<int, Ptr<T>>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        //Prompt::printFullSeparator();
         (*itr).second->printSelf();
-        //Prompt::printFullSeparator();
-        std::cout << "│" << std::endl;
-    }
-    std::cout << "│" << std::endl;
-}
+        std::cout << "│" << std::endl
+                  << "│─────────────" << std::endl
+                  << "│" << std::endl;
 
-template<typename T>
-void Prompt::forType<T>::printSelectables(
-    const Vector<T>& selectables
-) {
-    std::cout << "│" << std::endl;
-    for (typename Vector<T>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        // Prompt::printFullSeparator();
-        std::cout << "│" << std::endl;
-        (*itr).printSelf();
-        std::cout << "│" << std::endl;
-        // Prompt::printFullSeparator();
-        std::cout << "│" << std::endl;
     }
-    std::cout << std::endl;
+    std::cout << "│" << std::endl;
 }
 
 template<typename T>
@@ -174,13 +154,11 @@ void Prompt::forType<T>::printSelectables(
     std::cout << "│" << std::endl;
     std::cout << "│" << std::endl;
     for (typename Vector<Ptr<T>>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        //Prompt::printFullSeparator();
         std::cout << "│"<< std::endl
                   << "│" << std::endl;
         (*itr)->printSelf();
         std::cout << "│" << std::endl;
     }
-    // Prompt::printFullSeparator();
     std::cout << "│" << std::endl;
     std::cout << "│" << std::endl;
 
@@ -196,7 +174,7 @@ std::string Prompt::getTextFromInput(
     std::string text;
 
     if (std::cin.peek() == '\n') {
-        // discard leftover newline if it's sitting in the buffer
+        // discard leftover newline if there is one in the buffer
         std::cin.ignore(1, '\n');
     }
 

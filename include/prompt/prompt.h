@@ -61,13 +61,13 @@ public:
 
         static void printSelectables(const Vector<Ptr<T>>& selectables);
 
-        static void printSelectables(const Vector<T>& selectables);
-
         static bool handleLastCinInput(int& input, const Map<int, Ptr<T>>& options);
 
-        static bool handleLastCinInput(int& input, const Map<int, T>& options);
-
-        static bool handleLastCinInput(int& input, const Map<int, Ptr<T>>& options, const Map<int, Ptr<T>>& alreadySelectedOptions);
+        static bool handleLastCinInput(
+            int& input,
+            const Map<int, Ptr<T>>& options,
+            const Map<int, Ptr<T>>& alreadySelectedOptions
+        );
 
         forType() = delete;
         ~forType() = delete;
