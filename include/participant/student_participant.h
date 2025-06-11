@@ -4,19 +4,32 @@
 #include"participant.h"
 #include"subject.h"
 
+#include"alias.h"
+
 #include<memory>
 #include<unordered_map>
 
+using namespace alias;
+
 class StudentParticipant : public Participant {
 public:
-    StudentParticipant(const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects) : Participant(nextId()), learningSubjects(Prompt::forType<Subject>::getSelectablesFromInput("Select the subjects the student studies:", availableSubjects)) {};
+    StudentParticipant(
+        const Map<int, Ptr<Subject>>& availableSubjects
+    ) : Participant(nextId()),
+        learningSubjects(Prompt::forType<Subject>::getSelectablesFromInput("Select the subjects the student studies:", availableSubjects)) {};
 
-    StudentParticipant(std::string name, std::string cpf, const std::unordered_map<int, std::shared_ptr<Subject>>& learningSubjects) : Participant(nextId(), name, cpf), learningSubjects(learningSubjects) {};
+    StudentParticipant(
+        String name,
+        String cpf,
+        const Map<int, Ptr<Subject>>& learningSubjects
+    ) : Participant(nextId(), name, cpf), learningSubjects(learningSubjects) {};
+
     void printSelf() const override;
+    Json serializeSelf() const override;
     int nextId() override;
 private:
     static int currentId;
-    std::unordered_map<int, std::shared_ptr<Subject>> learningSubjects;
+    Map<int, Ptr<Subject>> learningSubjects;
 };
 
 #endif

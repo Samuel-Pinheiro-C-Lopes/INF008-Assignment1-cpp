@@ -8,26 +8,42 @@
 #include"external_participant.h"
 #include"professor_participant.h"
 
+#include"alias.h"
+
 #include<memory>
 #include<string>
 #include<unordered_map>
 #include<vector>
 
+using namespace alias;
+
 class WorkshopEvent : public Event<StudentParticipant> {
 public:
-    WorkshopEvent(const std::string& name, const int vacancies, const std::string& date, const std::unordered_map<int, std::shared_ptr<ProfessorParticipant>>& professors, const std::shared_ptr<Subject>& subject) : Event(nextId(), name, vacancies, date), professors(professors), subject(subject) {};
+    WorkshopEvent(
+        const String& name,
+        const int vacancies,
+        const String& date,
+        const Map<int, Ptr<ProfessorParticipant>>& professors,
+        const Ptr<Subject>& subject
+    ) : Event(nextId(), name, vacancies, date), professors(professors), subject(subject) {};
 
-    WorkshopEvent(const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects, const std::unordered_map<int, std::shared_ptr<ProfessorParticipant>>& availableProfessors) : Event(nextId()), subject(Prompt::forType<Subject>::getSelectableFromInput("Select the subject for the workshop:", availableSubjects)), professors(Prompt::forType<ProfessorParticipant>::getSelectablesFromInput("Select the professors for the workshop:", availableProfessors)) {};
+    WorkshopEvent(
+        const Map<int, Ptr<Subject>>& availableSubjects,
+        const Map<int, Ptr<ProfessorParticipant>>& availableProfessors
+    ) : Event(nextId()),
+        subject(Prompt::forType<Subject>::getSelectableFromInput("Select the subject for the workshop:", availableSubjects)),
+        professors(Prompt::forType<ProfessorParticipant>::getSelectablesFromInput("Select the professors for the workshop:", availableProfessors)) {};
 
-    bool addGuestRegistration(const std::shared_ptr<Registration<ExternalParticipant>>& guestRegistration);
-    std::vector<int> getGuestsKeys() const;
+    bool addGuestRegistration(const Ptr<Registration<ExternalParticipant>>& guestRegistration);
+    Vector<int> getGuestsKeys() const;
     void printSelf() const override;
+    Json serializeSelf() const override;
 private:
     static int currentId;
     int nextId() override;
-    std::shared_ptr<Subject> subject;
-    std::unordered_map<int, std::shared_ptr<ProfessorParticipant>> professors;
-    std::unordered_map<int, std::shared_ptr<Registration<ExternalParticipant>>> guestsRegistrations;
+    Ptr<Subject> subject;
+    Map<int, Ptr<ProfessorParticipant>> professors;
+    Map<int, Ptr<Registration<ExternalParticipant>>> guestsRegistrations;
 };
 
 #endif

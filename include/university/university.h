@@ -15,6 +15,8 @@
 
 #include"data_gen.h"
 
+#include"alias.h"
+
 #include<unordered_map>
 #include<memory>
 #include<vector>
@@ -22,13 +24,29 @@
 #include<iostream>
 #include<type_traits>
 
+using namespace alias;
+
 class University : public NamedEntity {
 public:
-    University(std::string name) : NamedEntity(nextId(), name) {};
-    University() : NamedEntity(nextId()) {};
-    void printSelf() const override;
+    University(
+        String name
+    ) : NamedEntity(nextId(), name) {};
 
-    /* Prints. Probably only need to use generalization of Prompt::forType<type>::printAll(const unordered_map<int, std::shared_ptr<type>> mapToPrint). */
+    University() : NamedEntity(nextId()) {};
+
+    static const Map<int, String> mainMenuOptions;
+
+    static const Map<int, String> reportsMenuOptions;
+
+    static const Map<int, String> registrationsMenuOptions;
+
+    static const Map<int, String> eventRegistrationsMenuOptions;
+
+    void printSelf() const override;
+    Json serializeSelf() const override;
+    bool generateLogFile() const;
+
+    /* Prints. */
     void printProfessors() const;
     void printStudents() const;
 
@@ -40,8 +58,7 @@ public:
     void printFairs() const;
     void printCourses() const;
 
-    /* University registrations. Probably will only need to call the empty constructor of everyone
-     * with the available choices. */
+    /* University registrations. */
     bool registerProfessor();
     bool registerStudent();
 
@@ -63,39 +80,47 @@ public:
     bool registerPresenterToFair();
     bool registerAttendeeToFair();
     // Course
-    bool registerAttendeToCourse();
+    bool registerAttendeeToCourse();
 
 private:
     int nextId() override { return 0; }
 
-    std::unordered_map<int, std::shared_ptr<ProfessorParticipant>> professors;
-    std::unordered_map<int, std::shared_ptr<StudentParticipant>> students;
+    Map<int, Ptr<ProfessorParticipant>> professors;
+    Map<int, Ptr<StudentParticipant>> students;
 
-    std::unordered_map<int, std::shared_ptr<Subject>> subjects;
+    Map<int, Ptr<Subject>> subjects;
 
-    std::unordered_map<int, std::shared_ptr<WorkshopEvent>> workshops;
-    std::unordered_map<int, std::shared_ptr<LectureEvent>> lectures;
-    std::unordered_map<int, std::shared_ptr<FairEvent>> fairs;
-    std::unordered_map<int, std::shared_ptr<CourseEvent>> courses;
+    Map<int, Ptr<WorkshopEvent>> workshops;
+    Map<int, Ptr<LectureEvent>> lectures;
+    Map<int, Ptr<FairEvent>> fairs;
+    Map<int, Ptr<CourseEvent>> courses;
 
 
-    template<typename EventTargetType, typename EventSourceType>
-    void pushBackEventsByMonthTo(std::vector<std::shared_ptr<EventTargetType>> target, std::unordered_map<int, std::shared_ptr<EventSourceType>> source, int month) {
-        static_assert(std::is_base_of<EventBase, EventTargetType>::value, "<EventTargetType> of pushBackEventsByMonthTo([...]) must be derived from EventBase class");
-        static_assert(std::is_base_of<EventTargetType, EventSourceType>::value, "<EventSourceType> of pushBackEventsByMonthTo([...]) must be derived from EventTargetType class");
+    template<typename T, typename G>
+    void pushBackEventsByMonthTo(
+        Vector<Ptr<T>> target,
+        Map<int, Ptr<G>> source,
+        int month
+    ) {
+        static_assert(std::is_base_of<EventBase, T>::value, "<T> of pushBackEventsByMonthTo([...]) must be derived from EventBase class");
+        static_assert(std::is_base_of<T, G>::value, "<G> of pushBackEventsByMonthTo([...]) must be derived from T class");
 
-        for (const std::pair<int, std::shared_ptr<EventSourceType>> pair : source)
+        for (const std::pair<int, Ptr<G>> pair : source)
             if (pair.second->getDate().getMonth() == month)
                 target.push_back(pair.second);
     };
 
-    template<typename whatToPrintType>
-    static void genericPrinter(const std::string& whatToPrint, const std::unordered_map<int, std::shared_ptr<whatToPrintType>>& sourceToPrintFrom) {
-        static_assert(std::is_base_of<Entity, whatToPrintType>::value, "<whatToPrintType> of University::genericPrinter([...]) must be derived from Entity class");
+    template<typename T>
+    static void genericPrinter(
+        const String& whatToPrint,
+        const Map<int, Ptr<T>>& sourceToPrintFrom
+    ) {
+        static_assert(std::is_base_of<Entity, T>::value, "<T> of University::genericPrinter([...]) must be derived from Entity class");
+
         Prompt::printHugeSeparator();
         std::cout << whatToPrint << " CURRENTLY REGISTERED: " << std::endl;
         Prompt::printHugeSeparator();
-        Prompt::forType<whatToPrintType>::printSelectables(sourceToPrintFrom);
+        Prompt::forType<T>::printSelectables(sourceToPrintFrom);
     }
 
     // so that the data gen can actually work with an university and fill it

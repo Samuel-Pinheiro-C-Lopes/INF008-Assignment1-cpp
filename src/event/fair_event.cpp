@@ -10,7 +10,7 @@
 #include<vector>
 
 /* Default id sequence */
-int FairEvent::currentId = 0;
+int FairEvent::currentId = 1;
 int FairEvent::nextId() {
     return FairEvent::currentId++;
 }
@@ -18,26 +18,41 @@ int FairEvent::nextId() {
 void FairEvent::printSelf() const {
     Event::printSelf();
     std::cout << "Presenters: " << std::endl;
-    for (const std::pair<const int, std::shared_ptr<Registration<StudentParticipant>>>& pair : presentersRegistrations) {
+    for (const std::pair<const int, Ptr<Registration<StudentParticipant>>>& pair : presentersRegistrations) {
         pair.second->printSelf();
         std::cout << std::endl;
     }
 }
 
-bool FairEvent::addPresenterRegistration(const std::shared_ptr<Registration<StudentParticipant>>& presenterRegistration) {
+bool FairEvent::addPresenterRegistration(
+    const Ptr<Registration<StudentParticipant>>& presenterRegistration
+) {
     return Event<ExternalParticipant>::addRegistrationTo<Registration<StudentParticipant>>(this->presentersRegistrations, presenterRegistration);
 }
 
-std::vector<int> FairEvent::getPresentersKeys() const {
+Vector<int> FairEvent::getPresentersKeys() const {
     return Event<ExternalParticipant>::getParticipantsKeysFrom
         <Registration<StudentParticipant>>(this->presentersRegistrations);
 }
 
-/*
-bool FairEvent::addPresenterRegistration(const std::shared_ptr<Participant>& presenterRegistration) {
-    if (vacancies == 0) return false;
-    bool wasRegistrationInserted = presentersRegistrations.insert(std::make_pair(presenterRegistration->getId(), presenterRegistration)).second;
-    if (wasRegistrationInserted) vacancies--;
-    return wasRegistrationInserted;
+Json FairEvent::serializeSelf() const {
+    Json json = Event<ExternalParticipant>::serializeSelf();
+    Json json_sparray = Json::array();
+    Json json_sarray = Json::array();
+
+    for (const std::pair<const int, Ptr<Registration<StudentParticipant>>>& pair : this->presentersRegistrations)
+        json_sparray.push_back({
+            { "registration", pair.first },
+            { "student", pair.second->getParticipantId() }
+        });
+
+    for (const std::pair<const int, Ptr<Subject>>& pair : this->subjects)
+        json_sarray.push_back({
+            { "subject", pair.second->getId() }
+        });
+
+    json["presenters"] = json_sparray;
+    json["subjects"] = json_sarray;
+
+    return json;
 }
-*/

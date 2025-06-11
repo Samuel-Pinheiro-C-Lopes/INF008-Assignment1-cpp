@@ -19,100 +19,178 @@
 #include<string>
 #include<limits>
 
-int main (int argc, char* argv[]) {
-    static const std::unordered_map<int, std::string> mainMenuOptions = {
-        { 0, "Exit;" },
-        { 1, "Registration Menu;" },
-        { 2, "Reports Menu;" },
-        { 3, "Registration to Events Menu. "}
-    }; 
-    static const std::unordered_map<int, std::string> reportsMenuOptions = {
-        { 0, "Exit;"},
-        { 1, "Print Professors;" },
-        { 2, "Print Students;" }, 
-        { 3, "Print Subjects;" },
-        { 4, "Print Workshop Events;" },
-        { 5, "Print Lecture Events;" },
-        { 6, "Print Fair Events;" },
-        { 7, "Print Course Events;" },
-        { 8, "Print all University Data." }
-    };
-    static const std::unordered_map<int, std::string> registrationsMenuOptions = {
-        { 0, "Exit;"},
-        { 1, "Register a Professor;" },
-        { 2, "Register a Student;" }, 
-        { 3, "Register a Subject;" },
-        { 4, "Register a Workshop Event;" },
-        { 5, "Register a Lecture Event;" },
-        { 6, "Register a Fair Event;" },
-        { 7, "Register a Course Event." }
-    };
-    static const std::unordered_map<int, std::string> eventRegistrationsMenuOptions = {
-        { 0, "Exit;"},
-        { 1, "Register Attendee to a Workshop;" },
-        { 2, "Register Guest to a Workshop;" }, 
-        { 3, "Register Attendee to Lecture;" },
-        { 4, "Register Presenter to Fair;" },
-        { 5, "Register Attendee to Fair;" },
-        { 6, "Register Attendee to Course." }
-    };
+/*
+ * 1 - prompt function to validate last cin (two overloads until now, yay!)
+ * 2 - switchs from main to handle menu done (double yay!) (more overloads for prompt
+ * cin handle function, also)
+ * 3 - just cleaned the prompt a little more, adding the generic ways of dealing with
+ * cin possible errors and the default print as options - added more overloads, but that's
+ * fine, right? They are exactly for this, I suppose...
+ * 4 - move these static menu option to the university and try to move the switchs to there?
+ * I dunno... there are switchs and whiles nested so it may be complicated...
+ * */
 
-    std::cout << "Welcome to the events & participants manager for the university! Firstly, input a name for the universisty." << std::endl;
-    University university;
-    DataGen::generateDataFor(university);
+int main (int argc, char* argv[]) {
+    // Presentation
+    std::cout << "Welcome to the events & participants manager for the university!" << std::endl;
+    std::cout << "First, input a name for the university!" << std::endl;
+    University university; // default empty constructor fetches the name.
+
+    // If it's needed to add some test data
+    if(Prompt::getFlagFromInput("Do you want to automatically generate some test data for the university?"))
+        DataGen::generateDataFor(university);
+
     int input = -1;
     while (input != 0) {
-        input = Prompt::getOptionFromInput(mainMenuOptions);
+        Prompt::printSelectablesAsOptions(University::mainMenuOptions);
 
-        if (!(std::cin >> input) || input > 8 || input < 0) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Please enter with a valid option..." << std::endl;
-            input = -1;
+        if (!Prompt::handleLastCinInput(input, University::mainMenuOptions))
             continue;
-        }
 
-        switch (input) {
-            case (1): {
-                input = Prompt::getOptionFromInput(registrationsMenuOptions);
-                break;
-            } case (2): {
-                input = Prompt::getOptionFromInput(reportsMenuOptions);
-                break;
-            } case (3): {
-                input = Prompt::getOptionFromInput(eventRegistrationsMenuOptions);
-                break;
-            }
-        }
+        if (input == 0)
+            break;
 
-        switch(input) {
-            case (1): {
-                university.registerProfessor();
-                break;
-            } case (2): {
-                university.registerStudent();
-                break;
-            } case (3): {
-                university.registerSubject();
-                break;
-            } case (4): {
-                university.registerWorkshop();
-                break;
-            } case (5): {
-                university.registerLecture();
-                break;
-            } case (6): {
-                university.registerFair();
-                break;
-            } case (7): {
-                university.registerCourse();
-                break;
-            } case (8): {
-                university.printSelf();
-                break;
-            }
-        }
-    }
+        while (input != 0) {
+            switch (input) {
+                // Registration
+                case (1): {
+                    Prompt::printSelectablesAsOptions(University::registrationsMenuOptions);
+
+                    if (!Prompt::handleLastCinInput(input,
+                        University::registrationsMenuOptions))
+                        continue;
+
+                    // Registration options
+                    switch(input) {
+                        case (1): {
+                            if (!university.registerProfessor())
+                                std::cout << "failure in registering a professor. Check the CPF." << std::endl;
+                            break;
+                        }
+                        case (2): {
+                            university.registerStudent();
+                            break;
+                        }
+                        case (3): {
+                            university.registerSubject();
+                            break;
+                        }
+                        case (4): {
+                            university.registerWorkshop();
+                            break;
+                        }
+                        case (5): {
+                            university.registerLecture();
+                            break;
+                        }
+                        case (6): {
+                            university.registerFair();
+                            break;
+                        }
+                        case (7): {
+                            university.registerCourse();
+                            break;
+                        }
+                    }
+                    if (input != 0)
+                        input = 1;
+                    break;
+                } // register
+                case (2): {
+                    Prompt::printSelectablesAsOptions(University::reportsMenuOptions);
+
+                    if (!Prompt::handleLastCinInput(input, University::reportsMenuOptions))
+                        continue;
+
+                    // Reports options
+                    switch (input) {
+                        case (1): {
+                            university.printProfessors();
+                            break;
+                        }
+                        case (2): {
+                            university.printStudents();
+                            break;
+                        }
+                        case (3): {
+                            university.printSubjects();
+                            break;
+                        }
+                        case (4): {
+                            university.printWorkshops();
+                            break;
+                        }
+                        case (5): {
+                            university.printLectures();
+                            break;
+                        }
+                        case (6): {
+                            university.printFairs();
+                            break;
+                        }
+                        case (7): {
+                            university.printCourses();
+                            break;
+                        }
+                        case (8): {
+                            university.printSelf();
+                            break;
+                        }
+                    }
+                    if (input != 0)
+                        input = 2;
+                    break;
+                } // reports
+                case (3): {
+                    Prompt::printSelectablesAsOptions(University::eventRegistrationsMenuOptions);
+
+                    if (!Prompt::handleLastCinInput(input, University::eventRegistrationsMenuOptions))
+                        continue;
+
+                    // Registrations to events options
+                    switch (input) {
+                        case (1): {
+                            university.registerAttendeeToWorkshop();
+                            break;
+                        }
+                        case (2): {
+                            university.registerGuestToWorkshop();
+                            break;
+                        }
+                        case (3): {
+                            university.registerAttendeeToLecture();
+                            break;
+                        }
+                        case (4): {
+                            university.registerPresenterToFair();
+                            break;
+                        }
+                        case (5): {
+                            university.registerAttendeeToFair();
+                            break;
+                        }
+                        case (6): {
+                            university.registerAttendeeToCourse();
+                            break;
+                        }
+                    }
+                    if (input != 0)
+                        input = 3;
+                    break;
+                } // Register to course
+                case (4): {
+                    std::cout << "Trying to write log file..." << std::endl;
+                    if (university.generateLogFile())
+                        std::cout << "Created file named [university.json] with serialized data." << std::endl;
+                    else
+                        std::cout << "Failed to generate log data..." << std::endl;
+                    input = 0;
+                    break;
+                }
+            } // main menu switch
+        } // loop
+        input = -1;
+    } // application loop
 
     std::cout << "Exiting..." << std::endl;
     return 0;

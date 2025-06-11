@@ -5,26 +5,37 @@
 #include"participant.h"
 #include"prompt.h"
 
+#include"alias.h"
+
 #include<memory>
 #include<unordered_map>
 #include<string>
 
+using namespace alias;
+
 /* registration in the online demeanor requires an e-mail for contact */
-template<typename ParticipantType>
-class OnlineEventRegistration : public Registration<ParticipantType> {
+template<typename T>
+class OnlineEventRegistration : public Registration<T> {
 public:
     void printSelf() const override;
     /* input based when there is no available participants */
-    OnlineEventRegistration() : Registration<ParticipantType>(nextId()), contactEmail(Prompt::getTextFromInput("Enter with a e-mail for contact:")) {};
+    OnlineEventRegistration() : Registration<T>(nextId()),
+    contactEmail(Prompt::getTextFromInput("Enter with a e-mail for contact:")) {};
 
     /* input based constructor based on available participants */
-    OnlineEventRegistration(const std::unordered_map<int, std::shared_ptr<ParticipantType>>& availableParticipants) : Registration<ParticipantType>(nextId(), availableParticipants), contactEmail(Prompt::getTextFromInput("Enter with a e-mail for contact:")) {};
+    OnlineEventRegistration(
+        const Map<int, Ptr<T>>& availableParticipants
+    ) : Registration<T>(nextId(), availableParticipants), contactEmail(Prompt::getTextFromInput("Enter with a e-mail for contact:")) {};
 
     /* default constructor */
-    OnlineEventRegistration(const std::string& date, const std::shared_ptr<ParticipantType>& participant, const std::string& contactEmail) :  Registration<ParticipantType>(nextId(), date, participant), contactEmail(contactEmail) {};
+    OnlineEventRegistration(
+        const String& date,
+        const Ptr<T>& participant,
+        const String& contactEmail
+    ) :  Registration<T>(nextId(), date, participant), contactEmail(contactEmail) {};
 
 private:
-    std::string contactEmail;
+    String contactEmail;
     int nextId() override;
     static int currentId;
 };

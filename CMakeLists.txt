@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(TRAB_1)
+
+
+# FetchContent to download the library
+include(FetchContent)
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/latest/download/json.tar.xz
+)
+
+FetchContent_MakeAvailable(json)
+
 # Gets all the .cpp files in the src directory
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
@@ -18,4 +29,8 @@ target_include_directories(TRAB_1 PRIVATE
     ${PROJECT_SOURCE_DIR}/include/university
     ${PROJECT_SOURCE_DIR}/include/values
     ${PROJECT_SOURCE_DIR}/include/data_gen
+    ${PROJECT_SOURCE_DIR}/include/alias
+    ${PROJECT_SOURCE_DIR}/include/json_generator
 )
+
+target_link_libraries(TRAB_1 PRIVATE nlohmann_json)

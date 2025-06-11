@@ -6,17 +6,17 @@
 
 #include<iostream>
 
-template<typename ParticipantType>
-int OnlineEventRegistration<ParticipantType>::currentId = 0;
+template<typename T>
+int OnlineEventRegistration<T>::currentId = 1;
 
-template<typename ParticipantType>
-int OnlineEventRegistration<ParticipantType>::nextId() {
-    return OnlineEventRegistration<ParticipantType>::currentId++;
+template<typename T>
+int OnlineEventRegistration<T>::nextId() {
+    return OnlineEventRegistration<T>::currentId++;
 };
 
-template<typename ParticipantType>
-void OnlineEventRegistration<ParticipantType>::printSelf() const {
-    Registration<ParticipantType>::printSelf();
+template<typename T>
+void OnlineEventRegistration<T>::printSelf() const {
+    Registration<T>::printSelf();
     std::cout << "E-mail for contact: " << this->contactEmail << "." << std::endl;
 };
 

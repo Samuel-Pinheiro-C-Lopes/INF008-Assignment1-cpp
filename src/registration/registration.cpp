@@ -1,6 +1,5 @@
 #include"registration.h"
 
-#include"registration_base.h"
 #include"participant.h"
 #include"student_participant.h"
 #include"professor_participant.h"
@@ -8,8 +7,8 @@
 
 #include<iostream>
 
-template<typename ParticipantType>
-void Registration<ParticipantType>::printSelf() const {
+template<typename T>
+void Registration<T>::printSelf() const {
     RegistrationBase::printSelf();
 }
 

@@ -8,7 +8,7 @@
 #include<limits>
 
 /* Default id sequence */
-int Subject::currentId = 0;
+int Subject::currentId = 1;
 int Subject::nextId() {
     return Subject::currentId++;
 }

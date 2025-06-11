@@ -7,23 +7,38 @@
 #include"participant.h"
 #include"student_participant.h"
 
+#include"alias.h"
+
 #include<memory>
 #include<string>
 #include<unordered_map>
 
+using namespace alias;
+
 class LectureEvent : public Event<StudentParticipant> {
 public:
-    LectureEvent(std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects, const std::unordered_map<int, std::shared_ptr<ProfessorParticipant>>& availableProfessors) : Event(nextId()), subjects(Prompt::forType<Subject>::getSelectablesFromInput("Select the subject for the lecture event:", availableSubjects)), professor(Prompt::forType<ProfessorParticipant>::getSelectableFromInput("Select the professor for the lecture event:", availableProfessors)) {};
+    LectureEvent(
+        const Map<int, Ptr<Subject>>& availableSubjects,
+        const Map<int, Ptr<ProfessorParticipant>>& availableProfessors
+    ) : Event(nextId()),
+        subjects(Prompt::forType<Subject>::getSelectablesFromInput("Select the subject for the lecture event:", availableSubjects)),
+        professor(Prompt::forType<ProfessorParticipant>::getSelectableFromInput("Select the professor for the lecture event:", availableProfessors)) {};
 
-    LectureEvent(const std::string& name, const int vacancies, const std::string& date, const std::unordered_map<int, std::shared_ptr<Subject>>& subjects, const std::shared_ptr<ProfessorParticipant>& professor) : Event(nextId(), name, vacancies, date), subjects(subjects), professor(professor) {};
+    LectureEvent(
+        const String& name,
+        const int vacancies,
+        const String& date,
+        const Map<int, Ptr<Subject>>& subjects,
+        const Ptr<ProfessorParticipant>& professor
+    ) : Event(nextId(), name, vacancies, date), subjects(subjects), professor(professor) {};
 
     void printSelf() const override;
+    Json serializeSelf() const override;
 private:
     static int currentId;
     int nextId() override;
-    std::unordered_map<int, std::shared_ptr<Subject>> subjects;
-    std::shared_ptr<ProfessorParticipant> professor;
-
+    Map<int, Ptr<Subject>> subjects;
+    Ptr<ProfessorParticipant> professor;
 };
 
 #endif

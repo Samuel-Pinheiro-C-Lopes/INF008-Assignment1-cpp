@@ -23,18 +23,18 @@
 
 void DataGen::generateDataFor(University& university) {
     // generating subjects
-    std::unordered_map<int, std::shared_ptr<Subject>> subjects;
-    std::shared_ptr<Subject> currSubject;
-    for (const std::string& name : {"Literature", "Soft Skills", "Database", "Web Development", "Design"}) {
+    Map<int, Ptr<Subject>> subjects;
+    Ptr<Subject> currSubject;
+    for (const String& name : {"Literature", "Soft Skills", "Database", "Web Development", "Design"}) {
         currSubject = std::make_shared<Subject>(name);
         subjects[currSubject->getId()] = currSubject;
     }
     university.subjects = subjects;
 
     // now the students
-    std::unordered_map<int, std::shared_ptr<StudentParticipant>> students;
-    std::shared_ptr<StudentParticipant> currStudent;
-    std::unordered_map<int, std::shared_ptr<Subject>> learningSubjects;
+    Map<int, Ptr<StudentParticipant>> students;
+    Ptr<StudentParticipant> currStudent;
+    Map<int, Ptr<Subject>> learningSubjects;
 
     learningSubjects.insert(std::make_pair(1, university.subjects.at(1)));
     learningSubjects.insert(std::make_pair(2, university.subjects.at(2)));
@@ -62,9 +62,9 @@ void DataGen::generateDataFor(University& university) {
     university.students = students;
 
     // now the professors
-    std::unordered_map<int, std::shared_ptr<ProfessorParticipant>> professors;
-    std::shared_ptr<ProfessorParticipant> currProfessor;
-    std::unordered_map<int, std::shared_ptr<Subject>> teachingSubjects;
+    Map<int, Ptr<ProfessorParticipant>> professors;
+    Ptr<ProfessorParticipant> currProfessor;
+    Map<int, Ptr<Subject>> teachingSubjects;
 
     teachingSubjects.insert(std::make_pair(2, university.subjects.at(2)));
     currProfessor = std::make_shared<ProfessorParticipant>("Jackson Vesper", "002.371.457-31", teachingSubjects);
@@ -89,11 +89,12 @@ void DataGen::generateDataFor(University& university) {
     university.professors = professors;
 
     // now the workshops
-    std::unordered_map<int, std::shared_ptr<WorkshopEvent>> workshops;
-    std::shared_ptr<WorkshopEvent> currWorkshop;
+    Map<int, Ptr<WorkshopEvent>> workshops;
+    Ptr<WorkshopEvent> currWorkshop;
 
-    std::unordered_map<int, std::shared_ptr<ProfessorParticipant>> professorsSubset;
-    // Workshop 1: Subject 1, Professors 2 and 3
+    Map<int, Ptr<ProfessorParticipant>> professorsSubset;
+
+    // Workshop 1:
     professorsSubset.insert(std::make_pair(1, university.professors.at(1)));
     professorsSubset.insert(std::make_pair(3, university.professors.at(3)));
     currWorkshop = std::make_shared<WorkshopEvent>(
@@ -106,7 +107,7 @@ void DataGen::generateDataFor(University& university) {
     workshops.insert(std::make_pair(currWorkshop->getId(), currWorkshop));
     professorsSubset.clear();
 
-    // Workshop 2: Subject 2, Professors 1 and 2
+    // Workshop 2:
     professorsSubset.insert(std::make_pair(1, university.professors.at(1)));
     professorsSubset.insert(std::make_pair(2, university.professors.at(2)));
     currWorkshop = std::make_shared<WorkshopEvent>(
@@ -119,7 +120,7 @@ void DataGen::generateDataFor(University& university) {
     workshops.insert(std::make_pair(currWorkshop->getId(), currWorkshop));
     professorsSubset.clear();
 
-    // Workshop 3: Subject 3, Professor 3 only
+    // Workshop 3:
     professorsSubset.insert(std::make_pair(3, university.professors.at(3)));
     currWorkshop = std::make_shared<WorkshopEvent>(
         "DB Design Best Practices",
@@ -134,13 +135,13 @@ void DataGen::generateDataFor(University& university) {
     university.workshops = workshops;
 
     // now the lectures
-    std::unordered_map<int, std::shared_ptr<LectureEvent>> lectures;
-    std::shared_ptr<LectureEvent> currLecture;
+    Map<int, Ptr<LectureEvent>> lectures;
+    Ptr<LectureEvent> currLecture;
 
-    std::unordered_map<int, std::shared_ptr<Subject>> subjectsSubset;
-    std::shared_ptr<ProfessorParticipant> selectedProfessor;
+    Map<int, Ptr<Subject>> subjectsSubset;
+    Ptr<ProfessorParticipant> selectedProfessor;
 
-    // Lecture 1: Subjects 1 & 2, Professor 2
+    // Lecture 1:
     subjectsSubset.insert(std::make_pair(1, university.subjects.at(1)));
     subjectsSubset.insert(std::make_pair(2, university.subjects.at(2)));
     selectedProfessor = university.professors.at(2);
@@ -154,7 +155,7 @@ void DataGen::generateDataFor(University& university) {
     lectures.insert(std::make_pair(currLecture->getId(), currLecture));
     subjectsSubset.clear();
 
-    // Lecture 2: Subject 3 only, Professor 3
+    // Lecture 2:
     subjectsSubset.insert(std::make_pair(3, university.subjects.at(3)));
     selectedProfessor = university.professors.at(3);
     currLecture = std::make_shared<LectureEvent>(
@@ -167,7 +168,7 @@ void DataGen::generateDataFor(University& university) {
     lectures.insert(std::make_pair(currLecture->getId(), currLecture));
     subjectsSubset.clear();
 
-    // Lecture 3: Subjects 1, 2 & 3, Professor 4
+    // Lecture 3:
     subjectsSubset.insert(std::make_pair(1, university.subjects.at(1)));
     subjectsSubset.insert(std::make_pair(2, university.subjects.at(2)));
     subjectsSubset.insert(std::make_pair(3, university.subjects.at(3)));
@@ -185,8 +186,8 @@ void DataGen::generateDataFor(University& university) {
     university.lectures = lectures;
 
     // now the fairs
-    std::unordered_map<int, std::shared_ptr<FairEvent>> fairs;
-    std::shared_ptr<FairEvent> currFair;
+    Map<int, Ptr<FairEvent>> fairs;
+    Ptr<FairEvent> currFair;
 
     // Fair 1
     currFair = std::make_shared<FairEvent>(
@@ -215,10 +216,10 @@ void DataGen::generateDataFor(University& university) {
     university.fairs = fairs;
 
     // now the courses
-    std::unordered_map<int, std::shared_ptr<CourseEvent>> courses;
-    std::shared_ptr<CourseEvent> currCourse;
+    Map<int, Ptr<CourseEvent>> courses;
+    Ptr<CourseEvent> currCourse;
 
-    // Course 1 - Database, taught by Sarah James (teaches subjects 2 & 3)
+    // Course 1
     currCourse = std::make_shared<CourseEvent>(
         "Advanced Database Systems",
         30,
@@ -228,17 +229,17 @@ void DataGen::generateDataFor(University& university) {
     );
     courses.insert(std::make_pair(currCourse->getId(), currCourse));
 
-    // Course 2 - Soft Skills, taught by Jackson Vesper (teaches subject 2)
+    // Course 2
     currCourse = std::make_shared<CourseEvent>(
         "Communication & Soft Skills",
         40,
         "2025-09-05",
-        university.professors.at(0), // Jackson Vesper
+        university.professors.at(1), // Jackson Vesper
         university.subjects.at(2)    // Soft Skills
     );
     courses.insert(std::make_pair(currCourse->getId(), currCourse));
 
-    // Course 3 - Literature, taught by Àkella Lynn (teaches subject 1)
+    // Course 3
     currCourse = std::make_shared<CourseEvent>(
         "Contemporary Literature",
         25,
@@ -253,8 +254,8 @@ void DataGen::generateDataFor(University& university) {
     /* External participants // just to declare and instantiate, not going to
     actually register them in the university since it defeats the purpose
     of them being externals... */
-    std::unordered_map<int, std::shared_ptr<ExternalParticipant>> externals;
-    std::shared_ptr<ExternalParticipant> currExternal;
+    Map<int, Ptr<ExternalParticipant>> externals;
+    Ptr<ExternalParticipant> currExternal;
 
     currExternal = std::make_shared<ExternalParticipant>("Caroline Grayson", "717.665.232-50", "Stanford University");
     externals.insert({currExternal->getId(), currExternal});
@@ -266,9 +267,9 @@ void DataGen::generateDataFor(University& university) {
     externals.insert({currExternal->getId(), currExternal});
 
     // ONLINE REGISTRATIONS
-    std::unordered_map<int, std::shared_ptr<OnlineEventRegistration<StudentParticipant>>> studentOnlineRegistrations;
-    std::unordered_map<int, std::shared_ptr<OnlineEventRegistration<ProfessorParticipant>>> professorOnlineRegistrations;
-    std::unordered_map<int, std::shared_ptr<OnlineEventRegistration<ExternalParticipant>>> externalOnlineRegistrations;
+    Map<int, Ptr<OnlineEventRegistration<StudentParticipant>>> studentOnlineRegistrations;
+    Map<int, Ptr<OnlineEventRegistration<ProfessorParticipant>>> professorOnlineRegistrations;
+    Map<int, Ptr<OnlineEventRegistration<ExternalParticipant>>> externalOnlineRegistrations;
 
     // Online student registrations
     auto sreg = std::make_shared<OnlineEventRegistration<StudentParticipant>>(
@@ -311,9 +312,9 @@ void DataGen::generateDataFor(University& university) {
     externalOnlineRegistrations.insert({ereg->getId(), ereg});
 
     // IN-PERSON REGISTRATIONS
-    std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<StudentParticipant>>> inPersonStudentRegistrations;
-    std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<ProfessorParticipant>>> inPersonProfessorRegistrations;
-    std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<ExternalParticipant>>> inPersonExternalRegistrations;
+    Map<int, Ptr<InPersonEventRegistration<StudentParticipant>>> inPersonStudentRegistrations;
+    Map<int, Ptr<InPersonEventRegistration<ProfessorParticipant>>> inPersonProfessorRegistrations;
+    Map<int, Ptr<InPersonEventRegistration<ExternalParticipant>>> inPersonExternalRegistrations;
 
     // In-person student registrations
     auto ipSReg = std::make_shared<InPersonEventRegistration<StudentParticipant>>(
@@ -325,7 +326,7 @@ void DataGen::generateDataFor(University& university) {
     inPersonStudentRegistrations.insert({ipSReg->getId(), ipSReg});
 
     ipSReg = std::make_shared<InPersonEventRegistration<StudentParticipant>>(
-        "2025-01-18", university.students.at(0), false);
+        "2025-01-18", university.students.at(1), false);
     inPersonStudentRegistrations.insert({ipSReg->getId(), ipSReg});
 
     // In-person professor registrations
@@ -343,7 +344,7 @@ void DataGen::generateDataFor(University& university) {
 
     // In-person external registrations
     auto ipEReg = std::make_shared<InPersonEventRegistration<ExternalParticipant>>(
-        "2025-06-11", externals.at(0), true);
+        "2025-06-11", externals.at(2), true);
     inPersonExternalRegistrations.insert({ipEReg->getId(), ipEReg});
 
     ipEReg = std::make_shared<InPersonEventRegistration<ExternalParticipant>>(
@@ -361,18 +362,18 @@ void DataGen::generateDataFor(University& university) {
     // WORKSHOPS
 
     // Add some external guest registrations
-    workshops.at(0)->addGuestRegistration(inPersonExternalRegistrations.at(0));
-    workshops.at(0)->addGuestRegistration(externalOnlineRegistrations.at(1));
+    workshops.at(1)->addGuestRegistration(inPersonExternalRegistrations.at(2));
+    workshops.at(1)->addGuestRegistration(externalOnlineRegistrations.at(1));
     // Add some students attendees registrations
-    workshops.at(0)->addAttendeeRegistration(studentOnlineRegistrations.at(2));
-    workshops.at(1)->addAttendeeRegistration(inPersonStudentRegistrations.at(1));
+    workshops.at(1)->addAttendeeRegistration(studentOnlineRegistrations.at(2));
+    workshops.at(2)->addAttendeeRegistration(inPersonStudentRegistrations.at(1));
 
     // LECTURES
 
     // Add student attendee registrations
-    lectures.at(0)->addAttendeeRegistration(studentOnlineRegistrations.at(1));
-    lectures.at(0)->addAttendeeRegistration(inPersonStudentRegistrations.at(1));
-    lectures.at(1)->addAttendeeRegistration(inPersonStudentRegistrations.at(2));
+    lectures.at(1)->addAttendeeRegistration(studentOnlineRegistrations.at(1));
+    lectures.at(1)->addAttendeeRegistration(inPersonStudentRegistrations.at(1));
+    lectures.at(2)->addAttendeeRegistration(inPersonStudentRegistrations.at(2));
 
     // FAIRS
 
@@ -381,69 +382,69 @@ void DataGen::generateDataFor(University& university) {
     // fairs.at(1)->addAttendeeRegistration(inPersonExternalRegistrations.at(1)); // diego.martinez@uba.ar
 
     // Add presenters (could be of any participant type)
-    fairs.at(0)->addPresenterRegistration(inPersonStudentRegistrations.at(0)); // university.students.at(1)
+    fairs.at(1)->addPresenterRegistration(inPersonStudentRegistrations.at(1)); // university.students.at(1)
     // fairs.at(0)->addPresenterRegistration(professorOnlineRegistrations.at(1)); // sarah.james@example.com
     // fairs.at(1)->addPresenterRegistration(inPersonExternalRegistrations.at(2)); // diego.martinez@uba.ar
 
     // COURSES
 
     // Add attendee registrations
-    courses.at(0)->addAttendeeRegistration(studentOnlineRegistrations.at(0)); // thomas.wayne@example.com
-    courses.at(1)->addAttendeeRegistration(inPersonStudentRegistrations.at(1)); // university.students.at(2)
+    courses.at(1)->addAttendeeRegistration(studentOnlineRegistrations.at(1)); // thomas.wayne@example.com
+    courses.at(2)->addAttendeeRegistration(inPersonStudentRegistrations.at(2)); // university.students.at(2)
 
     // Add tutor registrations
-    courses.at(0)->addTutorRegistration(studentOnlineRegistrations.at(1));
-    courses.at(1)->addTutorRegistration(studentOnlineRegistrations.at(1));
-    courses.at(1)->addTutorRegistration(inPersonStudentRegistrations.at(2));
+    courses.at(1)->addTutorRegistration(studentOnlineRegistrations.at(2));
+    courses.at(2)->addTutorRegistration(studentOnlineRegistrations.at(2));
+    courses.at(2)->addTutorRegistration(inPersonStudentRegistrations.at(1));
 }
 
 /*
-std::unordered_map<int, std::shared_ptr<ProfessorParticipant>> DataGen::generateProfessorData() {
+Map<int, Ptr<ProfessorParticipant>> DataGen::generateProfessorData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<StudentParticipant>> DataGen::generateStudentData() {
+Map<int, Ptr<StudentParticipant>> DataGen::generateStudentData() {
 
 }
-std::unordered_map<int, std::shared_ptr<Subject>> DataGen::generateSubjectData() {
-
-}
-
-std::unordered_map<int, std::shared_ptr<WorkshopEvent>> DataGen::generateWorkshopData() {
+Map<int, Ptr<Subject>> DataGen::generateSubjectData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<LectureEvent>> DataGen::generateLectureData() {
+Map<int, Ptr<WorkshopEvent>> DataGen::generateWorkshopData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<FairEvent>> DataGen::generateFairData() {
-
-}
-std::unordered_map<int, std::shared_ptr<CourseEvent>> DataGen::generateCourseData() {
+Map<int, Ptr<LectureEvent>> DataGen::generateLectureData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<StudentParticipant>>> DataGen::generateInPersonStudentRegistrationData() {
+Map<int, Ptr<FairEvent>> DataGen::generateFairData() {
+
+}
+Map<int, Ptr<CourseEvent>> DataGen::generateCourseData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<ProfessorParticipant>>> DataGen::generateInPersonProfessorRegistrationData() {
+Map<int, Ptr<InPersonEventRegistration<StudentParticipant>>> DataGen::generateInPersonStudentRegistrationData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<InPersonEventRegistration<ExternalParticipant>>> DataGen::generateInPersonExternalRegistrationData() {
+Map<int, Ptr<InPersonEventRegistration<ProfessorParticipant>>> DataGen::generateInPersonProfessorRegistrationData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<OnlineEventRegistration<StudentParticipant>>> DataGen::generateOnlineStudentRegistrationData() {
+Map<int, Ptr<InPersonEventRegistration<ExternalParticipant>>> DataGen::generateInPersonExternalRegistrationData() {
 
 }
 
-std::unordered_map<int, std::shared_ptr<OnlineEventRegistration<ProfessorParticipant>>> DataGen::generateOnlineProfessorRegistrationData() {
+Map<int, Ptr<OnlineEventRegistration<StudentParticipant>>> DataGen::generateOnlineStudentRegistrationData() {
 
 }
-std::unordered_map<int, std::shared_ptr<OnlineEventRegistration<ExternalParticipant>>> DataGen::generateOnlineExternalRegistrationData() {
+
+Map<int, Ptr<OnlineEventRegistration<ProfessorParticipant>>> DataGen::generateOnlineProfessorRegistrationData() {
+
+}
+Map<int, Ptr<OnlineEventRegistration<ExternalParticipant>>> DataGen::generateOnlineExternalRegistrationData() {
 
 }
 */

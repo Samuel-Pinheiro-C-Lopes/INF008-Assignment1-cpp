@@ -9,3 +9,9 @@ int Entity::getId() const {
 void Entity::printSelf() const {
     std::cout << "id: " << id << "." << std::endl;
 }
+
+Json Entity::serializeSelf() const {
+    return Json{
+        { "id", this->id }
+    };
+}

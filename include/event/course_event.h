@@ -7,35 +7,52 @@
 #include"subject.h"
 #include"prompt.h"
 
+#include"alias.h"
+
 #include<string>
 #include<memory>
 #include<vector>
 
+using namespace alias;
+
 class CourseEvent : public Event<StudentParticipant> {
 public:
-    /* I'm not quite sure overwritting the addGuestRegistration is needed since the type assertion
-     * is already made using the template definition up there... */
-    // bool registerGuestParticipant(const std::shared_ptr<StudentParticipant>& participant) override;
-    CourseEvent(const std::string& name, const int vacancies, const std::string& date, const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject) : Event(nextId(), name, vacancies, date), professor(CourseEvent::validateProfessor(professor, subject, VERBOSE) ? professor : nullptr ), subject(subject) {};
+    CourseEvent(
+        const String& name,
+        const int vacancies,
+        const String& date,
+        const Ptr<ProfessorParticipant>& professor,
+        const Ptr<Subject>& subject
+    ) : Event(nextId(), name, vacancies, date),
+        professor(professor),
+        subject(subject) {};
 
-    CourseEvent(const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects, const std::unordered_map<int, std::shared_ptr<ProfessorParticipant>>& availableProfessors) : Event(nextId()), subject(Prompt::forType<Subject>::getSelectableFromInput("Select the course subject:", availableSubjects)), professor(Prompt::forType<ProfessorParticipant>::getSelectableFromInput("Select the professor that is going to teach this course:", availableProfessors)) {};
+    CourseEvent(
+        const Map<int, Ptr<Subject>>& availableSubjects,
+        const Map<int, Ptr<ProfessorParticipant>>& availableProfessors
+    ) : Event(nextId()),
+        professor(Prompt::forType<ProfessorParticipant>::getSelectableFromInput("Select the professor that is going to teach this course:", availableProfessors)),
+        subject(Prompt::forType<Subject>::getSelectableFromInput("Select the course subject:", availableSubjects)) {};
 
-    bool addTutorRegistration(const std::shared_ptr<Registration<StudentParticipant>>& tutorRegistration);
+    bool addTutorRegistration(const Ptr<Registration<StudentParticipant>>& tutorRegistration);
 
-    std::vector<int> getTutorsKeys();
+    Vector<int> getTutorsKeys();
 
     void printSelf() const override;
+    Json serializeSelf() const override;
 protected:
     int nextId() override;
 private:
     static constexpr bool VERBOSE = true;
     static int currentId;
-    std::shared_ptr<Subject> subject;
-    std::shared_ptr<ProfessorParticipant> professor;
-    std::unordered_map<int, std::shared_ptr<Registration<StudentParticipant>>> tutorsRegistrations;
+    Ptr<Subject> subject;
+    Ptr<ProfessorParticipant> professor;
+    Map<int, Ptr<Registration<StudentParticipant>>> tutorsRegistrations;
 
     /* maybe that validation is better in the Professor class? Debatable... */
-    static bool validateProfessor(const std::shared_ptr<ProfessorParticipant>& professor, const std::shared_ptr<Subject>& subject, const bool verbose);
+    /*
+    static bool validateProfessor(const Ptr<ProfessorParticipant>& professor, const Ptr<Subject>& subject, const bool verbose);
+    */
 };
 
 #endif

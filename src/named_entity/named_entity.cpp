@@ -1,11 +1,6 @@
 #include"named_entity.h"
-#include<string>
+
 #include<iostream>
-/*
-int Entity::getId() const {
-    return id;
-}
-*/
 
 /* Default behavior, just print
  * the name. Print the id isn't normally what
@@ -14,11 +9,13 @@ void NamedEntity::printSelf() const {
     std::cout << name;
 }
 
-/*
-std::string NamedEntity::nameFromInput() {
-    std::string name;
-    std::cout << "Enter the name field: ";
-    std::cin >> name;
-    return name;
+bool NamedEntity::isValid() const {
+    return this->name.size() > 0;
 }
-*/
+
+
+Json NamedEntity::serializeSelf() const {
+    Json json = Entity::serializeSelf();
+    json["name"] = this->name;
+    return json;
+}

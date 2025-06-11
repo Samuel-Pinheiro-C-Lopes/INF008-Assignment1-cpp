@@ -8,22 +8,31 @@
 #include"prompt.h"
 #include"registration.h"
 
+#include"alias.h"
+
 #include<unordered_map>
 #include<memory>
 #include<vector>
 
+using namespace alias;
+
 /* This event could have many Presenters and guests */
 class FairEvent : public Event<ExternalParticipant> {
 public:
-    FairEvent(const std::string& name, const int vacancies, const std::string& date) : Event(nextId(), name, vacancies, date) {};
+    FairEvent(
+        const String& name,
+        const int vacancies,
+        const String& date) : Event(nextId(), name, vacancies, date) {};
 
     FairEvent() : Event(nextId()) {};
+
     void printSelf() const override;
-    bool addPresenterRegistration(const std::shared_ptr<Registration<StudentParticipant>>& presenterRegistration);
-    std::vector<int> getPresentersKeys() const;
+    bool addPresenterRegistration(const Ptr<Registration<StudentParticipant>>& presenterRegistration);
+    Vector<int> getPresentersKeys() const;
+    Json serializeSelf() const override;
 private:
-    std::unordered_map<int, std::shared_ptr<Registration<StudentParticipant>>> presentersRegistrations;
-    std::unordered_map<int, std::shared_ptr<Subject>> subjects;
+    Map<int, Ptr<Registration<StudentParticipant>>> presentersRegistrations;
+    Map<int, Ptr<Subject>> subjects;
     static int currentId;
     int nextId() override;
 };

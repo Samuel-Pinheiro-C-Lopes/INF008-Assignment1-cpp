@@ -1,6 +1,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <nlohmann/json.hpp>
+
+using Json = nlohmann::json;
+
 class Entity {
 private:
     const int id;
@@ -21,6 +25,8 @@ public:
      * will use ascendant classes
      * implementations of this */
     virtual void printSelf() const;
+
+    virtual Json serializeSelf() const;
 };
 
 #endif

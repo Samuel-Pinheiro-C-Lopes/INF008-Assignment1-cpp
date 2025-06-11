@@ -2,21 +2,29 @@
 #define EXTERNAL_PARTICIPANT_H
 
 #include"participant.h"
+#include"prompt.h"
+
+#include"alias.h"
 
 #include<string>
 
+using namespace alias;
+
 class ExternalParticipant : public Participant {
 public:
-    ExternalParticipant() : Participant(nextId()), originUniversity(originUniversityFromInput()) {};
+    ExternalParticipant() : Participant(nextId()), originUniversity(Prompt::getTextFromInput("Enter with the university of origin of this external participant: ")) {};
 
-    ExternalParticipant(std::string name, std::string cpf, std::string originUniversity) : Participant(nextId(), name, cpf), originUniversity(originUniversity) {};
+    ExternalParticipant(
+        String name,
+        String cpf,
+        String originUniversity) : Participant(nextId(), name, cpf), originUniversity(originUniversity) {};
 
     void printSelf() const override;
+    Json serializeSelf() const override;
 private:
     static int currentId;
     int nextId() override;
-    std::string originUniversity;
-    std::string originUniversityFromInput();
+    String originUniversity;
 };
 
 #endif

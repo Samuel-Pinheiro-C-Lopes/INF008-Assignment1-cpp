@@ -6,17 +6,18 @@
 
 #include<iostream>
 
-template<typename ParticipantType>
-int InPersonEventRegistration<ParticipantType>::currentId = 0;
+template<typename T>
+int InPersonEventRegistration<T>::currentId = 1;
 
-template<typename ParticipantType>
-int InPersonEventRegistration<ParticipantType>::nextId() {
-    return InPersonEventRegistration<ParticipantType>::currentId++;
+template<typename T>
+int InPersonEventRegistration<T>::nextId() {
+    return InPersonEventRegistration<T>::currentId++;
 };
 
-template<typename ParticipantType>
-void InPersonEventRegistration<ParticipantType>::printSelf() const {
-    Registration<ParticipantType>::printSelf();
+template<typename T>
+void InPersonEventRegistration<T>::printSelf() const {
+    Registration<T>::printSelf();
+
     std::cout << "Needs accessibility: ";
     if (this->accessibility) std::cout << "[YES]." << std::endl;
     else std::cout << "[NO]" << std::endl;

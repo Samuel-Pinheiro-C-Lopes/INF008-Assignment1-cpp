@@ -16,3 +16,13 @@ void EventBase::printSelf() const {
 const Date& EventBase::getDate() const {
     return this->date;
 }
+
+bool EventBase::isValid() const {
+    return this->date.getValue().size() > 0 && NamedEntity::isValid();
+}
+
+Json EventBase::serializeSelf() const {
+    Json json = NamedEntity::serializeSelf();
+    json["date"] = this->date.getValue();
+    return json;
+}

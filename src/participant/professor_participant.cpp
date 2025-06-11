@@ -9,7 +9,7 @@
 #include<limits>
 
 /* Default id sequence */
-int ProfessorParticipant::currentId = 0;
+int ProfessorParticipant::currentId = 1;
 int ProfessorParticipant::nextId() {
     return ProfessorParticipant::currentId++;
 }
@@ -17,20 +17,37 @@ int ProfessorParticipant::nextId() {
 void ProfessorParticipant::printSelf() const {
     std::cout << "Professor name: ";
     Participant::printSelf();
+
     std::cout << "Currently teaching the following subjects: " << std::endl;
-    for (const std::pair<int, std::shared_ptr<Subject>>& pair : this->teachingSubjects)
+    for (const std::pair<int, Ptr<Subject>>& pair : this->teachingSubjects)
         pair.second->printSelf();
 }
 
-bool ProfessorParticipant::teaches(const std::shared_ptr<Subject>& subject) const {
+bool ProfessorParticipant::teaches(
+    const Ptr<Subject>& subject
+) const {
     return this->teachingSubjects.find(subject->getId()) != this->teachingSubjects.end();
 }
 
-bool ProfessorParticipant::addSubject(const std::shared_ptr<Subject>& subject) {
+bool ProfessorParticipant::addSubject(
+    const Ptr<Subject>& subject
+) {
     return this->teachingSubjects.insert(std::make_pair(subject->getId(), subject)).second;
 }
 
+Json ProfessorParticipant::serializeSelf() const {
+    Json json = Participant::serializeSelf();
+    Json json_array = Json::array();
 
+    for (const std::pair<int, Ptr<Subject>>& pair : this->teachingSubjects)
+        json_array.push_back({
+            { "subject", pair.second->getId() }
+        });
+
+    json["subjects"] = json_array;
+
+    return json;
+}
 
 
 
@@ -38,8 +55,8 @@ bool ProfessorParticipant::addSubject(const std::shared_ptr<Subject>& subject) {
 /*
  Based on a source of available subjects, let's the user select uniquely for the professor
  deprecated since assigning this logic to the subject would be better for reusability
-std::unordered_map<int, std::shared_ptr<Subject>> ProfessorParticipant::teachingSubjectsFromInput(const std::unordered_map<int, std::shared_ptr<Subject>>& availableSubjects) {
-    std::unordered_map<int, std::shared_ptr<Subject>> selectedSubjects;
+std::unordered_map<int, Ptr<Subject>> ProfessorParticipant::teachingSubjectsFromInput(const std::unordered_map<int, Ptr<Subject>>& availableSubjects) {
+    std::unordered_map<int, Ptr<Subject>> selectedSubjects;
     int input = -1;
 
     while (input != 0) {

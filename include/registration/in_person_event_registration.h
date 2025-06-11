@@ -5,21 +5,32 @@
 #include"participant.h"
 #include"prompt.h"
 
+#include"alias.h"
+
 #include<string>
 #include<unordered_map>
 #include<memory>
 
-template<typename ParticipantType>
-class InPersonEventRegistration : public Registration<ParticipantType> {
+using namespace alias;
+
+template<typename T>
+class InPersonEventRegistration : public Registration<T> {
 public:
     void printSelf() const override;
 
     /* input based when there is no available participants */
-    InPersonEventRegistration() : Registration<ParticipantType>(nextId()), accessibility(Prompt::getFlagFromInput("Do you have any kind of disability? Enter if you need accessibility support:")) {};
+    InPersonEventRegistration() : Registration<T>(nextId()), accessibility(Prompt::getFlagFromInput("Do you have any kind of disability? Enter if you need accessibility support:")) {};
 
-    InPersonEventRegistration(const std::unordered_map<int, std::shared_ptr<ParticipantType>>& availableParticipants) : Registration<ParticipantType>(nextId(), availableParticipants), accessibility(Prompt::getFlagFromInput("Do you have any kind of disability? Enter if you need accessibility support:")) {};
+    InPersonEventRegistration(
+        const Map<int, Ptr<T>>& availableParticipants
+    ) : Registration<T>(nextId(), availableParticipants), accessibility(Prompt::getFlagFromInput("Do you have any kind of disability? Enter if you need accessibility support:")) {};
 
-    InPersonEventRegistration(const std::string& date, const std::shared_ptr<ParticipantType>& participant, bool accessibility) : Registration<ParticipantType>(nextId(), date, participant), accessibility(accessibility) {};
+    InPersonEventRegistration(
+        const String& date,
+        const Ptr<T>& participant,
+        bool accessibility
+    ) : Registration<T>(nextId(), date, participant), accessibility(accessibility) {};
+
 private:
     bool accessibility;
     int nextId() override;
