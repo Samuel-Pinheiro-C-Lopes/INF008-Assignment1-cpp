@@ -151,17 +151,17 @@ template<typename T>
 void Prompt::forType<T>::printSelectables(
     const Vector<Ptr<T>>& selectables
 ) {
-    std::cout << "│" << std::endl;
-    std::cout << "│" << std::endl;
+    std::cout << "│" << std::endl
+              << "│─────────────" << std::endl
+              << "│" << std::endl;
     for (typename Vector<Ptr<T>>::const_iterator itr = selectables.begin(); itr != selectables.end(); ++itr) {
-        std::cout << "│"<< std::endl
-                  << "│" << std::endl;
+        std::cout << "│"<< std::endl;
         (*itr)->printSelf();
-        std::cout << "│" << std::endl;
+        std::cout << "│" << std::endl
+                  << "│─────────────" << std::endl
+                  << "│" << std::endl;
     }
     std::cout << "│" << std::endl;
-    std::cout << "│" << std::endl;
-
 }
 
 // SIMPLE GETTERS FROM INPUT

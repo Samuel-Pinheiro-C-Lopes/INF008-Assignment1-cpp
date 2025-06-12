@@ -23,6 +23,7 @@
 #include<iostream>
 #include<fstream>
 
+#include<stdexcept>
 
 const Map<int, String> University::mainMenuOptions = {
     { 0, "Exit;" },
@@ -117,12 +118,17 @@ void University::printSubjects() const {
 
 
 void University::printEventsByMonth(const int month) {
-    std::vector<std::shared_ptr<EventBase>> events;
+    Vector<Ptr<EventBase>> events;
 
-    University::pushBackEventsByMonthTo<EventBase, WorkshopEvent>(events, this->workshops, month);
-    University::pushBackEventsByMonthTo<EventBase, LectureEvent>(events, this->lectures, month);
-    University::pushBackEventsByMonthTo<EventBase, FairEvent>(events, this->fairs, month);
-    University::pushBackEventsByMonthTo<EventBase, CourseEvent>(events, this->courses, month);
+    try {
+        University::pushBackEventsByMonthTo<EventBase, WorkshopEvent>(events, this->workshops, month);
+        University::pushBackEventsByMonthTo<EventBase, LectureEvent>(events, this->lectures, month);
+        University::pushBackEventsByMonthTo<EventBase, FairEvent>(events, this->fairs, month);
+        University::pushBackEventsByMonthTo<EventBase, CourseEvent>(events, this->courses, month);
+    } catch (const std::exception& e) {
+        std::cout << "Error while fetching events by month. Error: " << e.what() << "." << std::endl;
+        return;
+    }
 
     Prompt::forType<EventBase>::printSelectables(events);
 }
@@ -145,42 +151,42 @@ void University::printCourses() const {
 
 // University registrations. Probably will only need to call the empty constructor of everyone with the available choices.
 bool University::registerProfessor() {
-    std::shared_ptr<ProfessorParticipant> professor = std::make_shared<ProfessorParticipant>(this->subjects);
+    Ptr<ProfessorParticipant> professor = std::make_shared<ProfessorParticipant>(this->subjects);
     if (!professor->isValid()) return false;
     return this->professors.insert(std::make_pair(professor->getId(), professor)).second;
 }
 
 bool University::registerStudent() {
-    std::shared_ptr<StudentParticipant> student = std::make_shared<StudentParticipant>(this->subjects);
+    Ptr<StudentParticipant> student = std::make_shared<StudentParticipant>(this->subjects);
     if (!student->isValid()) return false;
     return this->students.insert(std::make_pair(student->getId(), student)).second;
 }
 
 bool University::registerSubject() {
-    std::shared_ptr<Subject> subject = std::make_shared<Subject>();
+    Ptr<Subject> subject = std::make_shared<Subject>();
     return this->subjects.insert(std::make_pair(subject->getId(), subject)).second;
 }
 
 bool University::registerWorkshop() {
-    std::shared_ptr<WorkshopEvent> workshop = std::make_shared<WorkshopEvent>(this->subjects, this->professors);
+    Ptr<WorkshopEvent> workshop = std::make_shared<WorkshopEvent>(this->subjects, this->professors);
     if (!workshop->isValid()) return false;
     return this->workshops.insert(std::make_pair(workshop->getId(), workshop)).second;
 }
 
 bool University::registerLecture() {
-    std::shared_ptr<LectureEvent> lecture = std::make_shared<LectureEvent>(this->subjects, this->professors);
+    Ptr<LectureEvent> lecture = std::make_shared<LectureEvent>(this->subjects, this->professors);
     if (!lecture->isValid()) return false;
     return this->lectures.insert(std::make_pair(lecture->getId(), lecture)).second;
 }
 
 bool University::registerFair() {
-    std::shared_ptr<FairEvent> fair = std::make_shared<FairEvent>();
+    Ptr<FairEvent> fair = std::make_shared<FairEvent>();
     if (!fair->isValid()) return false;
     return this->fairs.insert(std::make_pair(fair->getId(), fair)).second;
 }
 
 bool University::registerCourse() {
-    std::shared_ptr<CourseEvent> course = std::make_shared<CourseEvent>(this->subjects, this->professors);
+    Ptr<CourseEvent> course = std::make_shared<CourseEvent>(this->subjects, this->professors);
     if (!course->isValid()) return false;
     return this->courses.insert(std::make_pair(course->getId(), course)).second;
 }
@@ -189,11 +195,11 @@ bool University::registerCourse() {
 
 // Workshop
 bool University::registerAttendeeToWorkshop() {
-    std::shared_ptr<WorkshopEvent> toRegisterWorkshop =
+    Ptr<WorkshopEvent> toRegisterWorkshop =
     Prompt::forType<WorkshopEvent>::getSelectableFromInput("Select the workshop you want to add a attendee registration to.", this->workshops);
     bool inPerson = Prompt::getFlagFromInput("Will the participant come in person to the event?");
 
-    std::unordered_map<int, std::shared_ptr<StudentParticipant>> availableStudents = this->students;
+    Map<int, Ptr<StudentParticipant>> availableStudents = this->students;
 
     for (const int key : toRegisterWorkshop->getAttendesKeys())
         availableStudents.erase(key);
@@ -208,7 +214,7 @@ bool University::registerAttendeeToWorkshop() {
 
 
 bool University::registerGuestToWorkshop() {
-    std::shared_ptr<WorkshopEvent> toRegisterWorkshop =
+    Ptr<WorkshopEvent> toRegisterWorkshop =
     Prompt::forType<WorkshopEvent>::getSelectableFromInput("Select the workshop you want to add a guest registration to.", this->workshops);
     bool inPerson = Prompt::getFlagFromInput("Will the guest come in person to the event?");
 
@@ -223,11 +229,11 @@ bool University::registerGuestToWorkshop() {
 
 // Lecture
 bool University::registerAttendeeToLecture() {
-    std::shared_ptr<LectureEvent> toRegisterLecture =
+    Ptr<LectureEvent> toRegisterLecture =
     Prompt::forType<LectureEvent>::getSelectableFromInput("Select the lecture you want to add a attendee registration to.", this->lectures);
     bool inPerson = Prompt::getFlagFromInput("Will the student come in person to the event?");
 
-    std::unordered_map<int, std::shared_ptr<StudentParticipant>> availableStudents = this->students;
+    Map<int, Ptr<StudentParticipant>> availableStudents = this->students;
 
     for (const int key : toRegisterLecture->getAttendesKeys())
         availableStudents.erase(key);
@@ -242,11 +248,11 @@ bool University::registerAttendeeToLecture() {
 
 // Fair
 bool University::registerPresenterToFair() {
-    std::shared_ptr<FairEvent> toRegisterFair =
+    Ptr<FairEvent> toRegisterFair =
     Prompt::forType<FairEvent>::getSelectableFromInput("Select the fair you want to add a presenter registration to.", this->fairs);
     bool inPerson = Prompt::getFlagFromInput("Will the presenter come in person to the event?");
 
-    std::unordered_map<int, std::shared_ptr<StudentParticipant>> availableStudents = this->students;
+    Map<int, Ptr<StudentParticipant>> availableStudents = this->students;
     for (const int key : toRegisterFair->getPresentersKeys())
         availableStudents.erase(key);
 
@@ -259,7 +265,7 @@ bool University::registerPresenterToFair() {
 }
 
 bool University::registerAttendeeToFair() {
-    std::shared_ptr<FairEvent> toRegisterFair = Prompt::forType<FairEvent>::getSelectableFromInput("Select the fair you want to add a presenter registration to.", this->fairs);
+    Ptr<FairEvent> toRegisterFair = Prompt::forType<FairEvent>::getSelectableFromInput("Select the fair you want to add a presenter registration to.", this->fairs);
     bool inPerson = Prompt::getFlagFromInput("Will the attendee come in person to the event?");
 
     if (inPerson)
@@ -270,11 +276,11 @@ bool University::registerAttendeeToFair() {
 
 // Course
 bool University::registerAttendeeToCourse() {
-    std::shared_ptr<CourseEvent> toRegisterCourse =
+    Ptr<CourseEvent> toRegisterCourse =
     Prompt::forType<CourseEvent>::getSelectableFromInput("Select the course you want to add a attendee registration to.", this->courses);
     bool inPerson = Prompt::getFlagFromInput("Will the student come in person to the event?");
 
-    std::unordered_map<int, std::shared_ptr<StudentParticipant>> availableStudents = this->students;
+    Map<int, Ptr<StudentParticipant>> availableStudents = this->students;
 
     for (const int key : toRegisterCourse->getAttendesKeys())
         availableStudents.erase(key);

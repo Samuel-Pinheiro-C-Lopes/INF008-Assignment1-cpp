@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(TRAB_1)
-
+project(ASSGN_1)
 
 # FetchContent to download the library
 include(FetchContent)
@@ -15,10 +14,10 @@ FetchContent_MakeAvailable(json)
 # Gets all the .cpp files in the src directory
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-add_executable(TRAB_1 ${SOURCES})
+add_executable(ASSGN_1 ${SOURCES})
 
 # Where to look for .h files
-target_include_directories(TRAB_1 PRIVATE
+target_include_directories(ASSGN_1 PRIVATE
     ${PROJECT_SOURCE_DIR}/include/entity
     ${PROJECT_SOURCE_DIR}/include/prompt
     ${PROJECT_SOURCE_DIR}/include/named_entity
@@ -33,4 +32,5 @@ target_include_directories(TRAB_1 PRIVATE
     ${PROJECT_SOURCE_DIR}/include/json_generator
 )
 
-target_link_libraries(TRAB_1 PRIVATE nlohmann_json)
+# linking the library
+target_link_libraries(ASSGN_1 PRIVATE nlohmann_json)
